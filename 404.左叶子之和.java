@@ -72,6 +72,7 @@ class Solution {
         if (root == null) {
             return ans;
         }
+        // 检测到左节点是叶子节点
         if (root.left != null && root.left.left == null && root.left.right == null) {
             ans += root.left.val;
         }
