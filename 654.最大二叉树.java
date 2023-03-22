@@ -85,6 +85,7 @@ class Solution {
     }
 
     public TreeNode constructWithBeginAndEnd(int begin, int end) {
+        // 选择左闭右开，则左不能等于右
         if (begin >= end) {
             return null;
         }

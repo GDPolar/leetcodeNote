@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,37 +47,68 @@ class Node {
 }; 
 
 
+class TreeMaker {
+    public static TreeNode retree(String s){
+        String rs = s.substring(1,s.length()-1);
+        String[] valarr = rs.split(",");
+        int len = valarr.length;
+        int i = 0;
+        TreeNode head = new TreeNode(renumber(valarr[i]));
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.addLast(head);
+        i++;
+        while (i<len){
+            TreeNode root = deque.pollFirst();
+            if(i<len&&!"null".equals(valarr[i])){
+                root.left = new TreeNode(renumber(valarr[i]));
+                deque.addLast(root.left);
+
+            }
+            i++;
+            if(i<len&&!"null".equals(valarr[i])){
+                root.right = new TreeNode(renumber(valarr[i]));
+                deque.addLast(root.right);
+            }
+            i++;
+        }
+        return head;
+    }
+    private static int renumber(String s){
+        char[] arr = s.toCharArray();
+        int res = 0;
+        for(int i = 0;i<arr.length;i++){
+            res = res*10+(int)(arr[i]-'0');
+        }
+        return res;
+    }
+}
+
+
 public class T {
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(1, new TreeNode(2), new TreeNode(3));
-        
-        System.out.println(new T().buildTree(new int[]{9,3,15,20,7}, new int[]{9,15,7,20,3}));
+        TreeNode root1 = TreeMaker.retree("[1,3,2,5]");
+        TreeNode root2 = TreeMaker.retree("[2,1,3,null,4,null,7]");
+        Object res = new T().combine(6, 3);
+        System.out.println(res);
     }
 
-
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
-        
-        if (inorder.length == 0) {
-            return null;
-        }
-        return buildTreeWithBeginAndEnd(inorder, postorder, 0, inorder.length - 1, 0, postorder.length - 1);
+    List<List<Integer>> res = new ArrayList<>();
+    List<Integer> r = new ArrayList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        f(n, k, 1);
+        return res;
     }
 
-    public TreeNode buildTreeWithBeginAndEnd(int[] inorder, int[] postorder, int inBegin, int inEnd, int poBegin, int poEnd) {
-        if (inBegin > inEnd || poBegin > poEnd) {
-            return null;
+    public void f(int n, int k, int start) {
+        if (k == 0) {
+            res.add(new ArrayList<>(r));
+            return;
         }
-        int rootIndex;
-        for (rootIndex = inBegin; rootIndex <= inEnd; rootIndex++) {
-            if (inorder[rootIndex] == postorder[poEnd]) {
-                break;
-            }
+        for (int i = start; i <= n; i++) {
+            r.add(i);
+            f(n, k - 1, i + 1);
+            r.remove(r.size() - 1);
         }
-        TreeNode root = new TreeNode(inorder[rootIndex]);
-        root.left = buildTreeWithBeginAndEnd(inorder, postorder, inBegin, rootIndex - 1, poBegin, rootIndex - 1);
-        root.right = buildTreeWithBeginAndEnd(inorder, postorder, rootIndex + 1, inEnd, rootIndex, poEnd - 1);
-        return root;
     }
-
 
 }
