@@ -69,7 +69,7 @@ class Solution {
         for (int i = start; i <= n; i++) {
             r.add(i);
             f(n, k - 1, i + 1);
-            // 上一步执行结束，意味着向 res 里添加了一个结果
+            // 执行至此，意味着向 res 里添加了一个结果
             // 回溯，撤销处理的节点
             r.remove(r.size() - 1);
         }
