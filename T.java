@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -86,28 +87,39 @@ class TreeMaker {
 
 public class T {
     public static void main(String[] args) {
+        int[] c = {10,1,2,7,6,1,5};
         TreeNode root1 = TreeMaker.retree("[1,3,2,5]");
         TreeNode root2 = TreeMaker.retree("[2,1,3,null,4,null,7]");
-        Object res = new T().combine(6, 3);
-        System.out.println(res);
+        new T().combinationSum2(c, 8);
+        System.out.println(1);
     }
-
     List<List<Integer>> res = new ArrayList<>();
-    List<Integer> r = new ArrayList<>();
-    public List<List<Integer>> combine(int n, int k) {
-        f(n, k, 1);
+    List<Integer> path = new ArrayList<>();
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        backTracking(candidates, target, 0, 0);
         return res;
     }
 
-    public void f(int n, int k, int start) {
-        if (k == 0) {
-            res.add(new ArrayList<>(r));
+    public void backTracking(int[] candidates, int target, int startIndex, int amountOfSameNumber) {
+        if (target == 0) {
+            res.add(new ArrayList<>(path));
             return;
         }
-        for (int i = start; i <= n; i++) {
-            r.add(i);
-            f(n, k - 1, i + 1);
-            r.remove(r.size() - 1);
+        for (int i = startIndex; i < candidates.length; i++) {
+            path.add(candidates[i]);
+            // 剪枝。当前位置及之后位置的数都不满足条件
+            if (target - candidates[i] < 0) {
+                path.remove(path.size() - 1);
+                break;
+            }
+            if (i > 0 && candidates[i] == candidates[i - 1]) {
+                amountOfSameNumber++;
+            } else {
+                amountOfSameNumber = 0;
+            }
+            backTracking(candidates, target - candidates[i], i + 1 + amountOfSameNumber, amountOfSameNumber);
+            path.remove(path.size() - 1);
         }
     }
 

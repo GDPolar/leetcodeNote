@@ -57,18 +57,19 @@ class Solution {
     List<List<Integer>> res = new ArrayList<>();
     List<Integer> r = new ArrayList<>();
     public List<List<Integer>> combine(int n, int k) {
-        f(n, k, 1);
+        backTracking(n, k, 1);
         return res;
     }
 
-    public void f(int n, int k, int start) {
+    public void backTracking(int n, int k, int start) {
         if (k == 0) {
             res.add(new ArrayList<>(r));
             return;
         }
-        for (int i = start; i <= n; i++) {
+        // i <= n - k + 1 剪枝操作
+        for (int i = start; i <= n - k + 1; i++) {
             r.add(i);
-            f(n, k - 1, i + 1);
+            backTracking(n, k - 1, i + 1);
             // 执行至此，意味着向 res 里添加了一个结果
             // 回溯，撤销处理的节点
             r.remove(r.size() - 1);
