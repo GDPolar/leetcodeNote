@@ -90,37 +90,43 @@ public class T {
         int[] c = {10,1,2,7,6,1,5};
         TreeNode root1 = TreeMaker.retree("[1,3,2,5]");
         TreeNode root2 = TreeMaker.retree("[2,1,3,null,4,null,7]");
-        new T().combinationSum2(c, 8);
-        System.out.println(1);
+        new T().partition("efe");
     }
-    List<List<Integer>> res = new ArrayList<>();
-    List<Integer> path = new ArrayList<>();
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        backTracking(candidates, target, 0, 0);
+    List<List<String>> res = new ArrayList<>();
+    List<String> path = new ArrayList<>();
+    public List<List<String>> partition(String s) {
+        // 类似 45.组合问题，只不过组合问题中 path 每次添加的为当前选择的一个元素
+        // 而此处添加的是从 start 开始到当前选择的元素的一串元素
+        backTracking(s, 0);
         return res;
     }
 
-    public void backTracking(int[] candidates, int target, int startIndex, int amountOfSameNumber) {
-        if (target == 0) {
+    public void backTracking(String s, int start) {
+        if (start >= s.length()) {
             res.add(new ArrayList<>(path));
             return;
         }
-        for (int i = startIndex; i < candidates.length; i++) {
-            path.add(candidates[i]);
-            // 剪枝。当前位置及之后位置的数都不满足条件
-            if (target - candidates[i] < 0) {
-                path.remove(path.size() - 1);
+        String stemp;
+        for (int i = start; i < s.length(); i++) {
+            stemp = s.substring(start, i + 1);
+            if (!isPalindrome(stemp)) {
                 break;
             }
-            if (i > 0 && candidates[i] == candidates[i - 1]) {
-                amountOfSameNumber++;
-            } else {
-                amountOfSameNumber = 0;
-            }
-            backTracking(candidates, target - candidates[i], i + 1 + amountOfSameNumber, amountOfSameNumber);
+            path.add(stemp);
+            backTracking(s, i + 1);
             path.remove(path.size() - 1);
         }
     }
 
+    public boolean isPalindrome(String p) {
+        int start = 0, end = p.length() - 1;
+        while (start < end) {
+            if (p.charAt(start) != p.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
 }

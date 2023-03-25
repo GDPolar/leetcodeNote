@@ -78,7 +78,7 @@ class Solution {
             return;
         }
         for (int i = startIndex; i < candidates.length; i++) {
-            // 去重
+            // ★ 去重。i > startIndex 保证纵向允许重复，横向不允许重复
             if (i > startIndex && candidates[i] == candidates[i - 1]) {
                 continue;
             }
