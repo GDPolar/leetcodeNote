@@ -81,6 +81,7 @@ class Solution {
         }
     }
 
+    // 可使用 dp 数组优化
     public boolean isPalindrome(String p) {
         int start = 0, end = p.length() - 1;
         while (start < end) {
