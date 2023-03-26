@@ -90,43 +90,36 @@ public class T {
         int[] c = {10,1,2,7,6,1,5};
         TreeNode root1 = TreeMaker.retree("[1,3,2,5]");
         TreeNode root2 = TreeMaker.retree("[2,1,3,null,4,null,7]");
-        new T().partition("efe");
+        new T().findSubsequences(new int[]{2,1,2});
     }
-    List<List<String>> res = new ArrayList<>();
-    List<String> path = new ArrayList<>();
-    public List<List<String>> partition(String s) {
-        // 类似 45.组合问题，只不过组合问题中 path 每次添加的为当前选择的一个元素
-        // 而此处添加的是从 start 开始到当前选择的元素的一串元素
-        backTracking(s, 0);
+    List<List<Integer>> res = new ArrayList<>();
+    List<Integer> path = new ArrayList<>();
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        if (nums.length < 2) {
+            return res;
+        }
+        backTracking(nums, 0);
         return res;
     }
-
-    public void backTracking(String s, int start) {
-        if (start >= s.length()) {
+    // [1,2,3,4,5,6,7,8,9,10,1,1,1,1,1]
+    // [100,90,80,70,60,50,60,70,80,90,100]
+    public void backTracking(int[] nums, int startIndex) {
+        if (path.size() > 1) {
             res.add(new ArrayList<>(path));
-            return;
         }
-        String stemp;
-        for (int i = start; i < s.length(); i++) {
-            stemp = s.substring(start, i + 1);
-            if (!isPalindrome(stemp)) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = startIndex; i < nums.length; i++) {
+            if (i > startIndex && set.contains(nums[i])) {
+                continue;
+            }
+            // 
+            if (path.size() > 0 && nums[i] < path.get(path.size() - 1)) {
                 break;
             }
-            path.add(stemp);
-            backTracking(s, i + 1);
+            set.add(nums[i]);
+            path.add(nums[i]);
+            backTracking(nums, i + 1);
             path.remove(path.size() - 1);
         }
-    }
-
-    public boolean isPalindrome(String p) {
-        int start = 0, end = p.length() - 1;
-        while (start < end) {
-            if (p.charAt(start) != p.charAt(end)) {
-                return false;
-            }
-            start++;
-            end--;
-        }
-        return true;
     }
 }

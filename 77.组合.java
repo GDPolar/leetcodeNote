@@ -61,13 +61,13 @@ class Solution {
         return res;
     }
 
-    public void backTracking(int n, int k, int start) {
+    public void backTracking(int n, int k, int startIndex) {
         if (k == 0) {
             res.add(new ArrayList<>(r));
             return;
         }
         // i <= n - k + 1 剪枝操作
-        for (int i = start; i <= n - k + 1; i++) {
+        for (int i = startIndex; i <= n - k + 1; i++) {
             r.add(i);
             backTracking(n, k - 1, i + 1);
             // 执行至此，意味着向 res 里添加了一个结果
