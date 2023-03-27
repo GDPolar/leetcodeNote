@@ -89,37 +89,92 @@ public class T {
     public static void main(String[] args) {
         int[] c = {10,1,2,7,6,1,5};
         TreeNode root1 = TreeMaker.retree("[1,3,2,5]");
-        TreeNode root2 = TreeMaker.retree("[2,1,3,null,4,null,7]");
-        new T().findSubsequences(new int[]{2,1,2});
+        List<List<String>> tickets1 = new ArrayList<>();
+        List<String> temp = new ArrayList<>();
+        temp.add("MUC");
+        temp.add("LHR");
+        tickets1.add(temp);
+        temp = new ArrayList<>();
+        temp.add("JFK");
+        temp.add("MUC");
+        tickets1.add(temp);
+        temp = new ArrayList<>();
+        temp.add("SFO");
+        temp.add("SJC");
+        tickets1.add(temp);
+        temp = new ArrayList<>();
+        temp.add("LHR");
+        temp.add("SFO");
+        tickets1.add(temp);
+
+        temp = new ArrayList<>();
+        List<List<String>> tickets2 = new ArrayList<>();
+        temp.add("JFK");
+        temp.add("SFO");
+        tickets2.add(temp);
+        temp = new ArrayList<>();
+        temp.add("JFK");
+        temp.add("ATL");
+        tickets2.add(temp);
+        temp = new ArrayList<>();
+        temp.add("SFO");
+        temp.add("ATL");
+        tickets2.add(temp);
+        temp = new ArrayList<>();
+        temp.add("ATL");
+        temp.add("JFK");
+        tickets2.add(temp);
+        temp = new ArrayList<>();
+        temp.add("ATL");
+        temp.add("SFO");
+        tickets2.add(temp);
+
+        new T().findItinerary(tickets2);
     }
-    List<List<Integer>> res = new ArrayList<>();
-    List<Integer> path = new ArrayList<>();
-    public List<List<Integer>> findSubsequences(int[] nums) {
-        if (nums.length < 2) {
-            return res;
-        }
-        backTracking(nums, 0);
+    List<String> res = new ArrayList<>();
+    List<String> path = new ArrayList<>();
+    int[] set;
+    public List<String> findItinerary(List<List<String>> tickets) {
+        set = new int[tickets.size()];
+        backTracking(tickets, "JFK", 0);
         return res;
     }
-    // [1,2,3,4,5,6,7,8,9,10,1,1,1,1,1]
-    // [100,90,80,70,60,50,60,70,80,90,100]
-    public void backTracking(int[] nums, int startIndex) {
-        if (path.size() > 1) {
-            res.add(new ArrayList<>(path));
+
+    public void backTracking(List<List<String>> tickets, String currPosition, int used) {
+        if (used == tickets.size()) {
+            res = new ArrayList<>(path);
+            return;
         }
-        HashSet<Integer> set = new HashSet<>();
-        for (int i = startIndex; i < nums.length; i++) {
-            if (i > startIndex && set.contains(nums[i])) {
+        for (int i = 0; i < tickets.size(); i++) {
+            if (set[i] == 1) {
                 continue;
             }
-            // 
-            if (path.size() > 0 && nums[i] < path.get(path.size() - 1)) {
-                break;
+            List<String> p = tickets.get(i);
+            if (p.get(0).equals(currPosition)) {
+                currPosition = tickets.get(i).get(1);
+                if (!check()) {
+                    break;
+                }
+                path.add(currPosition);
+                set[i] = 1;
+                backTracking(tickets, currPosition, used + 1);
+                set[i] = 0;
+                currPosition = tickets.get(i).get(0);
+                path.remove(path.size() - 1);
             }
-            set.add(nums[i]);
-            path.add(nums[i]);
-            backTracking(nums, i + 1);
-            path.remove(path.size() - 1);
+
         }
+    }
+
+    public boolean check() {
+        if (res.size() == 0) {
+            return true;
+        }
+        for (int i = 0; i < path.size(); i++) {
+            if (path.get(i).compareTo(res.get(i)) > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }
