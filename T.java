@@ -129,49 +129,56 @@ public class T {
         temp.add("SFO");
         tickets2.add(temp);
 
-        new T().findItinerary(tickets2);
+        new T().solveNQueens(4);
     }
-    List<String> res = new ArrayList<>();
-    List<String> path = new ArrayList<>();
-    int[] set;
-    public List<String> findItinerary(List<List<String>> tickets) {
-        set = new int[tickets.size()];
-        backTracking(tickets, "JFK", 0);
+    ArrayList<Integer> path = new ArrayList<>();
+    char[][] board;
+    List<List<String>> res = new ArrayList<>();
+    public List<List<String>> solveNQueens(int n) {
+        board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(board[i], '.');
+        }
+        backTracking(n, n);
         return res;
     }
 
-    public void backTracking(List<List<String>> tickets, String currPosition, int used) {
-        if (used == tickets.size()) {
-            res = new ArrayList<>(path);
+    private List<String> boardToStrings() {
+        ArrayList<String> res = new ArrayList<>();    
+        for (int i = 0; i < board.length; i++) {
+            res.add(new String(board[i]));
+        }
+        return res;
+    }
+
+    public void backTracking(int n, int left) {
+        if (left == 0) {
+            res.add(boardToStrings());
             return;
         }
-        for (int i = 0; i < tickets.size(); i++) {
-            if (set[i] == 1) {
-                continue;
+        for (int i = 0; i < n; i++) {
+            if (check(n - left, i)) {
+                board[n - left][i] = 'Q';      
+                backTracking(n, left - 1);
+                board[n - left][i] = '.';  
             }
-            List<String> p = tickets.get(i);
-            if (p.get(0).equals(currPosition)) {
-                currPosition = tickets.get(i).get(1);
-                if (!check()) {
-                    break;
-                }
-                path.add(currPosition);
-                set[i] = 1;
-                backTracking(tickets, currPosition, used + 1);
-                set[i] = 0;
-                currPosition = tickets.get(i).get(0);
-                path.remove(path.size() - 1);
-            }
-
         }
     }
 
-    public boolean check() {
-        if (res.size() == 0) {
-            return true;
+
+    private boolean check(int curX, int curY) {
+        for (int i = curX - 1; i >= 0; i--) {
+            if (board[i][curY] == 'Q') {
+                return false;
+            }
         }
-        for (int i = 0; i < path.size(); i++) {
-            if (path.get(i).compareTo(res.get(i)) > 0) {
+        for (int i = 1; i <= curX && i <= curY; i++) {
+            if (board[curX - i][curY - i] == 'Q') {
+                return false;
+            }
+        }
+        for (int i = 1; curX + i <= board.length && curY + i <= board.length; i++) {
+            if (board[curX + i][curY + i] == 'Q') {
                 return false;
             }
         }
