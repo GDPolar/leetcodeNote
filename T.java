@@ -129,57 +129,58 @@ public class T {
         temp.add("SFO");
         tickets2.add(temp);
 
-        new T().solveNQueens(4);
+        char[][] aaa = new char[][]{{'5','3','.','.','7','.','.','.','.'},{'6','.','.','1','9','5','.','.','.'},{'.','9','8','.','.','.','.','6','.'},{'8','.','.','.','6','.','.','.','3'},{'4','.','.','8','.','3','.','.','1'},{'7','.','.','.','2','.','.','.','6'},{'.','6','.','.','.','.','2','8','.'},{'.','.','.','4','1','9','.','.','5'},{'.','.','.','.','8','.','.','7','9'}};
+        new T().solveSudoku(aaa);
+        int a = 2;
     }
-    ArrayList<Integer> path = new ArrayList<>();
-    char[][] board;
-    List<List<String>> res = new ArrayList<>();
-    public List<List<String>> solveNQueens(int n) {
-        board = new char[n][n];
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(board[i], '.');
-        }
-        backTracking(n, n);
-        return res;
+    
+    public void solveSudoku(char[][] board) {
+        backTracking(board);
     }
 
-    private List<String> boardToStrings() {
-        ArrayList<String> res = new ArrayList<>();    
-        for (int i = 0; i < board.length; i++) {
-            res.add(new String(board[i]));
-        }
-        return res;
-    }
-
-    public void backTracking(int n, int left) {
-        if (left == 0) {
-            res.add(boardToStrings());
-            return;
-        }
-        for (int i = 0; i < n; i++) {
-            if (check(n - left, i)) {
-                board[n - left][i] = 'Q';      
-                backTracking(n, left - 1);
-                board[n - left][i] = '.';  
+    public boolean backTracking(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') {
+                    for (int k = 1; k <= 9; k++) {
+                        if (check(board, i, j, k)){
+                            board[i][j] = (char)(k + '0');
+                            if (backTracking(board)) {
+                                return true;
+                            }
+                            board[i][j] = '.';
+                        }
+                    }
+                    // 九个数字都不可以填入，则回溯撤销
+                    return false;
+                }
             }
         }
-    }
-
-
-    private boolean check(int curX, int curY) {
-        for (int i = curX - 1; i >= 0; i--) {
-            if (board[i][curY] == 'Q') {
+        // 
+        return true;
+    }   
+    public boolean check(char[][] board, int x, int y, int v) {
+        System.out.println("x = "+x+", y = " + y);
+        char val = (char)(v + '0');
+        for (int i = 0; i < 9; i++) {
+            if (board[x][i] == val) {
                 return false;
             }
         }
-        for (int i = 1; i <= curX && i <= curY; i++) {
-            if (board[curX - i][curY - i] == 'Q') {
+        for (int i = 0; i < 9; i++) {
+            if (board[i][y] == val) {
                 return false;
             }
         }
-        for (int i = 1; curX + i <= board.length && curY + i <= board.length; i++) {
-            if (board[curX + i][curY + i] == 'Q') {
-                return false;
+        int leftupx = x / 3;
+        leftupx *= 3;
+        int leftupy = y / 3;
+        leftupy *= 3;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i + leftupx][y + leftupy] == val) {
+                    return false;
+                }
             }
         }
         return true;
