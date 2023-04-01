@@ -130,7 +130,7 @@ class Solution {
         }
         // 此时 r 指向的节点 T 即为原待删除节点 root 的左子树的最大节点
         // T 节点一定无右子树
-        // 删除该节点 T 并将其 val 返回用于替换
+        // 删除该节点 T（即用 T 的左孩子代替 T） 并将其 val 返回用于替换
         father.right = r.left;
         return r.val;
     }
