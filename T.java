@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 class TreeNode {
@@ -128,21 +130,28 @@ public class T {
         temp.add("ATL");
         temp.add("SFO");
         tickets2.add(temp);
+        // [4,2,4]\n1
+        // [4,2,6]\n3
 
-        char[][] aaa = new char[][]{{'5','3','.','.','7','.','.','.','.'},{'6','.','.','1','9','5','.','.','.'},{'.','9','8','.','.','.','.','6','.'},{'8','.','.','.','6','.','.','.','3'},{'4','.','.','8','.','3','.','.','1'},{'7','.','.','.','2','.','.','.','6'},{'.','6','.','.','.','.','2','8','.'},{'.','.','.','4','1','9','.','.','5'},{'.','.','.','.','8','.','.','7','9'}};
-        new T().convertBST(TreeMaker.retree("[4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]"));
+        new T().topKFrequent(new int[]{4,2,4}, 1);
+        new T().topKFrequent(new int[]{2,3,4,5,2,4,3,1,1,1,1,2,2,3},3);
         int a = 2;
     }
-    
-    int sum = 0;
-    public TreeNode convertBST(TreeNode root) {
-        if (root == null) {
-            return root;
+    Deque<Integer> deque = new LinkedList<>();
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        Queue<Integer> queue = new PriorityQueue<>(
+            (a, b) -> map.get(a) - map.get(b)
+        );
+        Arrays.sort(nums);
+        int prev = nums[0];
+        int num = 0;
+        int[] res = new int[k];
+        for (int i = 0; i < k; i++) {
+            res[i] = queue.peek();
+            queue.remove();
         }
-        convertBST(root.right);
-        sum += root.val;
-        root.val = sum;
-        convertBST(root.right);
-        return root;
+        return res;
     }
+
 }
