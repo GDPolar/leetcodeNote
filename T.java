@@ -133,25 +133,41 @@ public class T {
         // [4,2,4]\n1
         // [4,2,6]\n3
 
-        new T().topKFrequent(new int[]{4,2,4}, 1);
-        new T().topKFrequent(new int[]{2,3,4,5,2,4,3,1,1,1,1,2,2,3},3);
+        new T().wiggleMaxLength(new int[]{1,7,4,9,2,5});
+        new T().wiggleMaxLength(new int[]{3,5,1,6,5,4,5,2});
         int a = 2;
     }
-    Deque<Integer> deque = new LinkedList<>();
-    public int[] topKFrequent(int[] nums, int k) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        Queue<Integer> queue = new PriorityQueue<>(
-            (a, b) -> map.get(a) - map.get(b)
-        );
-        Arrays.sort(nums);
-        int prev = nums[0];
-        int num = 0;
-        int[] res = new int[k];
-        for (int i = 0; i < k; i++) {
-            res[i] = queue.peek();
-            queue.remove();
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length <= 1) {
+            return nums.length;
         }
-        return res;
-    }
+        int ans1 = 0;
+        int type = 1;
+        int temp = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (type == 1 && temp < nums[i] && nums[i] > nums[i + 1] || 
+                (type == -1 && temp > nums[i] && nums[i] < nums[i + 1])) {
+                 if (type == 1 && i + 1 < nums.length ) {
 
+                 }
+                
+                
+                temp = nums[i];
+                type *= -1;
+                ans1++;
+            }
+        }
+        int ans2 = 0;
+        type = -1;
+        temp = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (type == 1 && temp < nums[i] && nums[i] > nums[i + 1] || 
+                (type == -1 && temp > nums[i] && nums[i] < nums[i + 1])) {
+                temp = nums[i];
+                type *= -1;
+                ans2++;
+            }
+        }
+        return 1 + Math.max(ans1, ans2);
+    }
 }
