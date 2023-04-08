@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class TreeNode {
     int val;
@@ -133,41 +136,24 @@ public class T {
         // [4,2,4]\n1
         // [4,2,6]\n3
 
-        new T().wiggleMaxLength(new int[]{1,7,4,9,2,5});
-        new T().wiggleMaxLength(new int[]{3,5,1,6,5,4,5,2});
+        new T().largestSumAfterKNegations(new int[]{-2,-3,-4}, 4);
+
         int a = 2;
     }
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length <= 1) {
-            return nums.length;
+    int ans = Integer.MAX_VALUE;
+    public int largestSumAfterKNegations(int[] nums, int k) {
+        int sum = 1;
+        System.out.println("---------------");
+        long begin1 = System.currentTimeMillis();
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
         }
-        int ans1 = 0;
-        int type = 1;
-        int temp = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            if (type == 1 && temp < nums[i] && nums[i] > nums[i + 1] || 
-                (type == -1 && temp > nums[i] && nums[i] < nums[i + 1])) {
-                 if (type == 1 && i + 1 < nums.length ) {
+        System.out.println(System.currentTimeMillis() - begin1);
+        long begin2 = System.currentTimeMillis();
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+        }
+        System.out.println(System.currentTimeMillis() - begin2);
 
-                 }
-                
-                
-                temp = nums[i];
-                type *= -1;
-                ans1++;
-            }
-        }
-        int ans2 = 0;
-        type = -1;
-        temp = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            if (type == 1 && temp < nums[i] && nums[i] > nums[i + 1] || 
-                (type == -1 && temp > nums[i] && nums[i] < nums[i + 1])) {
-                temp = nums[i];
-                type *= -1;
-                ans2++;
-            }
-        }
-        return 1 + Math.max(ans1, ans2);
+        
+        return sum;
     }
 }
