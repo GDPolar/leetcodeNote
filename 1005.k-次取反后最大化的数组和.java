@@ -77,6 +77,7 @@ class Solution {
         for (int i = 0; i < k; i++) {
             if (i < nums.length - 1 && nums[negativeIndex] < 0) {
                 nums[negativeIndex] *= -1;
+                // 到达负正交界处时
                 if (nums[negativeIndex] >= Math.abs(nums[negativeIndex + 1])) {
                     negativeIndex++;
                 }
@@ -88,7 +89,6 @@ class Solution {
             sum += nums[i];
         }
         return sum;
-        
         /*
         int sum = 0;
         nums = IntStream.of(nums)

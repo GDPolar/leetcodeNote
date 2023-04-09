@@ -8,8 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 class TreeNode {
     int val;
@@ -133,12 +135,14 @@ public class T {
         temp.add("ATL");
         temp.add("SFO");
         tickets2.add(temp);
-        // [4,2,4]\n1
-        // [4,2,6]\n3
 
-        new T().largestSumAfterKNegations(new int[]{-2,-3,-4}, 4);
+ 
 
-        int a = 2;
+        String concat = Stream.of("a", "B", "c", "D", "e", "F").
+        filter(x -> x.compareTo("Z") > 0).
+        reduce(String::concat).get();
+        // new T().largestSumAfterKNegations(new int[]{-2,-3,-4}, 4);
+        int a = 1;
     }
     int ans = Integer.MAX_VALUE;
     public int largestSumAfterKNegations(int[] nums, int k) {
@@ -152,8 +156,11 @@ public class T {
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
         }
         System.out.println(System.currentTimeMillis() - begin2);
+        String str = "good good study and day day up";
+        System.out.println("11111111");
+        new Random().ints().filter(i -> i > 100 && i < 1000).limit(5)
+        .forEach(System.out::println);
 
-        
         return sum;
     }
 }
