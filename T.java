@@ -136,31 +136,36 @@ public class T {
         temp.add("SFO");
         tickets2.add(temp);
 
- 
 
-        String concat = Stream.of("a", "B", "c", "D", "e", "F").
-        filter(x -> x.compareTo("Z") > 0).
-        reduce(String::concat).get();
-        // new T().largestSumAfterKNegations(new int[]{-2,-3,-4}, 4);
+        new T().candy(new int[]{1,2,3,3,3,2,1});
         int a = 1;
     }
     int ans = Integer.MAX_VALUE;
-    public int largestSumAfterKNegations(int[] nums, int k) {
-        int sum = 1;
-        System.out.println("---------------");
-        long begin1 = System.currentTimeMillis();
-        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+    public int candy(int[] ratings) {
+        if (ratings.length == 1) {
+            return 1;
         }
-        System.out.println(System.currentTimeMillis() - begin1);
-        long begin2 = System.currentTimeMillis();
-        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+        int prevRight = 0;
+        int[] dpl = new int[ratings.length];
+        dpl[0] = 0;
+        int anser = 0;
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                dpl[i] = dpl[i - 1] + 1;
+            } else {
+                dpl[i] = 0;
+            }
         }
-        System.out.println(System.currentTimeMillis() - begin2);
-        String str = "good good study and day day up";
-        System.out.println("11111111");
-        new Random().ints().filter(i -> i > 100 && i < 1000).limit(5)
-        .forEach(System.out::println);
-
-        return sum;
+        // 1 2 3 1 3 2 1
+        anser += dpl[ratings.length - 1] + 1;
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            int currRight = 0;
+            if (ratings[i] > ratings[i + 1]) {
+                currRight = prevRight + 1;
+            }
+            anser += Math.max(currRight, dpl[i]) + 1;
+            currRight = prevRight;
+        }
+        return anser;
     }
 }
