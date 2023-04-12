@@ -56,6 +56,13 @@ class Node {
 
 
 class TreeMaker {
+    
+}
+
+
+public class T {
+
+    // 字符串转为二叉树树
     public static TreeNode retree(String s){
         String rs = s.substring(1,s.length()-1);
         String[] valarr = rs.split(",");
@@ -89,13 +96,40 @@ class TreeMaker {
         }
         return res;
     }
-}
 
+    // 字符串转为二维数组
+    public static int[][] twoD(String s, int outterLength, int innerLength) {
+        int[][] res = new int[outterLength][];
+        for (int i = 0; i < outterLength; i++) {
+            res[i] = new int[innerLength];
+        }
+        int[] nums = new int[outterLength * innerLength];
+        int k = 0;
+        StringBuilder sb = null;
+        for (int i = 1; i < s.length() - 1; i++) {
+            if (s.charAt(i) == '[') {
+                sb = new StringBuilder();
+            } else if (s.charAt(i) == ']') {
+                nums[k++] = Integer.parseInt(sb.toString());
+                sb = new StringBuilder();
+                i++;
+            } else if (s.charAt(i) == ',') {
+                nums[k++] = Integer.parseInt(sb.toString());
+                sb = new StringBuilder();
+            } else {
+                sb.append(s.charAt(i));
+            }
+        }
+        for (int i = 0; i < outterLength; i++) {
+            for (int j = 0; j < innerLength; j++) {
+                res[i][j] = nums[i * innerLength + j];
+            }
+        }
+        return res;
+    }
 
-public class T {
     public static void main(String[] args) {
         int[] c = {10,1,2,7,6,1,5};
-        TreeNode root1 = TreeMaker.retree("[1,3,2,5]");
         List<List<String>> tickets1 = new ArrayList<>();
         List<String> temp = new ArrayList<>();
         temp.add("MUC");
@@ -136,36 +170,36 @@ public class T {
         temp.add("SFO");
         tickets2.add(temp);
 
-
-        new T().candy(new int[]{1,2,3,3,3,2,1});
+        int[][] data = twoD("[[12,-1],[0,4],[11,-4]]", 3, 2);
+        new T().eraseOverlapIntervals(twoD("[[0,2],[1,3],[2,4],[3,5],[4,6]]", 5, 2));
         int a = 1;
     }
     int ans = Integer.MAX_VALUE;
-    public int candy(int[] ratings) {
-        if (ratings.length == 1) {
-            return 1;
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals.length <= 1) {
+            return 0;
         }
-        int prevRight = 0;
-        int[] dpl = new int[ratings.length];
-        dpl[0] = 0;
-        int anser = 0;
-        for (int i = 1; i < ratings.length; i++) {
-            if (ratings[i] > ratings[i - 1]) {
-                dpl[i] = dpl[i - 1] + 1;
+        int ans = 0;
+        Arrays.sort(intervals, (e1, e2) -> {
+            if (e1[0] == e2[0]) {
+                return Integer.compare(e1[1], e2[1]);
+            }
+            return Integer.compare(e1[0], e2[0]);
+        });
+        int[] pos = intervals[0];
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] == pos[0]) {
+                ans++;
+            } else if (intervals[i][0] >= pos[1]){
+                pos = intervals[i];
+                continue;
+            } else if (intervals[i][1] <= pos[1]) {
+                pos = intervals[i];
+                ans++;
             } else {
-                dpl[i] = 0;
+                ans++;
             }
         }
-        // 1 2 3 1 3 2 1
-        anser += dpl[ratings.length - 1] + 1;
-        for (int i = ratings.length - 2; i >= 0; i--) {
-            int currRight = 0;
-            if (ratings[i] > ratings[i + 1]) {
-                currRight = prevRight + 1;
-            }
-            anser += Math.max(currRight, dpl[i]) + 1;
-            currRight = prevRight;
-        }
-        return anser;
+        return ans;
     }
 }

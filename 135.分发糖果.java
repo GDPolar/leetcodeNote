@@ -74,8 +74,8 @@ class Solution {
             }
         }
         // 同理，dpr[i] 的值表示 ratings[i] 元素右侧连续递减序列长度
-        // 此处只需要用到 dpr[] 中临近的两个值，故可以简化为只保存 dpr[i+1] 和 dpr[i]
-        // prevRight 即 dpr[i + 1]，currRight 即 dpr[i]
+        // 由于此处只需要用到 dpr[] 中临近的两个值，故可以简化为只保存 dpr[i+1] 和 dpr[i]
+        // prevRight 即 dpr[i+1]，currRight 即 dpr[i]
         int prevRight = 0, currRight = 0;
         for (int i = ratings.length - 1; i >= 0; i--) {
             if (i + 1 < ratings.length && ratings[i] > ratings[i + 1]) {
@@ -83,6 +83,7 @@ class Solution {
             } else {
                 currRight = 0; 
             }
+            // 最少要有一个
             anser += Math.max(currRight, dpl[i]) + 1;
             prevRight = currRight;
         }
