@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /*
  * @lc app=leetcode.cn id=763 lang=java
  *
@@ -51,7 +55,35 @@
 // @lc code=start
 class Solution {
     public List<Integer> partitionLabels(String s) {
-
+        List<Integer> res = new ArrayList<>();
+        if (s.length() == 1) {
+            res.add(1);
+        } else {
+            int[] lastPos = new int[26];
+            Arrays.fill(lastPos, -1);
+            // 获取每种字母最后出现的位置
+            for (int i = 0; i < s.length(); i++) {
+                int c = s.charAt(i) - 'a';
+                lastPos[c] = i; 
+            }
+            for (int i = 0; i < s.length(); i++) {
+                int c = s.charAt(i) - 'a';
+                int cover = lastPos[c];
+                int j;
+                // 找到当前字符的覆盖范围
+                for (j = i; j < cover; j++) {
+                    int ci = s.charAt(j) - 'a';
+                    if (lastPos[ci] > cover) {
+                        // 更新覆盖范围
+                        cover = lastPos[ci];
+                    }
+                }
+                res.add(j - i + 1);
+                // 设置下一子串的起点
+                i = cover;
+            }
+        }
+        return res;
     }
 }
 // @lc code=end

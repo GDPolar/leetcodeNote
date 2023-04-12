@@ -171,35 +171,35 @@ public class T {
         tickets2.add(temp);
 
         int[][] data = twoD("[[12,-1],[0,4],[11,-4]]", 3, 2);
-        new T().eraseOverlapIntervals(twoD("[[0,2],[1,3],[2,4],[3,5],[4,6]]", 5, 2));
+        new T().partitionLabels("wvpxpsdvdbwvbtdiptwtxnnbtdvdtbvadnxboiqi");
         int a = 1;
     }
     int ans = Integer.MAX_VALUE;
-    public int eraseOverlapIntervals(int[][] intervals) {
-        if (intervals.length <= 1) {
-            return 0;
-        }
-        int ans = 0;
-        Arrays.sort(intervals, (e1, e2) -> {
-            if (e1[0] == e2[0]) {
-                return Integer.compare(e1[1], e2[1]);
+    public List<Integer> partitionLabels(String s) {
+        List<Integer> res = new ArrayList<>();
+        if (s.length() == 1) {
+            res.add(1);
+        } else {
+            int[] lastPos = new int[26];
+            Arrays.fill(lastPos, -1);
+            for (int i = 0; i < s.length(); i++) {
+                int c = s.charAt(i) - 'a';
+                lastPos[c] = (i > lastPos[c] ? i : lastPos[c]); 
             }
-            return Integer.compare(e1[0], e2[0]);
-        });
-        int[] pos = intervals[0];
-        for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] == pos[0]) {
-                ans++;
-            } else if (intervals[i][0] >= pos[1]){
-                pos = intervals[i];
-                continue;
-            } else if (intervals[i][1] <= pos[1]) {
-                pos = intervals[i];
-                ans++;
-            } else {
-                ans++;
+            for (int i = 0; i < s.length(); i++) {
+                int c = s.charAt(i) - 'a';
+                int end = lastPos[c];
+                int j;
+                for (j = i; j < end; j++) {
+                    int ci = s.charAt(i) - 'a';
+                    if (lastPos[ci] > end) {
+                        end = lastPos[ci];
+                    }
+                }
+                res.add(j - i + 1);
+                i = end;
             }
         }
-        return ans;
+        return res;
     }
 }
