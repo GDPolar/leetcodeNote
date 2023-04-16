@@ -55,13 +55,7 @@ class Node {
 }; 
 
 
-class TreeMaker {
-    
-}
-
-
 public class T {
-
     // 字符串转为二叉树树
     public static TreeNode retree(String s){
         String rs = s.substring(1,s.length()-1);
@@ -129,77 +123,27 @@ public class T {
     }
 
     public static void main(String[] args) {
-        int[] c = {10,1,2,7,6,1,5};
-        List<List<String>> tickets1 = new ArrayList<>();
-        List<String> temp = new ArrayList<>();
-        temp.add("MUC");
-        temp.add("LHR");
-        tickets1.add(temp);
-        temp = new ArrayList<>();
-        temp.add("JFK");
-        temp.add("MUC");
-        tickets1.add(temp);
-        temp = new ArrayList<>();
-        temp.add("SFO");
-        temp.add("SJC");
-        tickets1.add(temp);
-        temp = new ArrayList<>();
-        temp.add("LHR");
-        temp.add("SFO");
-        tickets1.add(temp);
+        int[] a = new int[1];
+        int[][] aa = new int[1][];
+        List<String> list = new ArrayList<>();
+        
+        int[][] data = twoD("[[1,3],[2,6],[8,10],[15,18]]", 4, 2);
+        new T().minCostClimbingStairs(new int[]{1,100,1,1,1,100,1,1,100,1});
 
-        temp = new ArrayList<>();
-        List<List<String>> tickets2 = new ArrayList<>();
-        temp.add("JFK");
-        temp.add("SFO");
-        tickets2.add(temp);
-        temp = new ArrayList<>();
-        temp.add("JFK");
-        temp.add("ATL");
-        tickets2.add(temp);
-        temp = new ArrayList<>();
-        temp.add("SFO");
-        temp.add("ATL");
-        tickets2.add(temp);
-        temp = new ArrayList<>();
-        temp.add("ATL");
-        temp.add("JFK");
-        tickets2.add(temp);
-        temp = new ArrayList<>();
-        temp.add("ATL");
-        temp.add("SFO");
-        tickets2.add(temp);
-
-        int[][] data = twoD("[[12,-1],[0,4],[11,-4]]", 3, 2);
-        new T().partitionLabels("wvpxpsdvdbwvbtdiptwtxnnbtdvdtbvadnxboiqi");
-        int a = 1;
     }
-    int ans = Integer.MAX_VALUE;
-    public List<Integer> partitionLabels(String s) {
-        List<Integer> res = new ArrayList<>();
-        if (s.length() == 1) {
-            res.add(1);
-        } else {
-            int[] lastPos = new int[26];
-            Arrays.fill(lastPos, -1);
-            for (int i = 0; i < s.length(); i++) {
-                int c = s.charAt(i) - 'a';
-                lastPos[c] = (i > lastPos[c] ? i : lastPos[c]); 
-            }
-            for (int i = 0; i < s.length(); i++) {
-                int c = s.charAt(i) - 'a';
-                int end = lastPos[c];
-                int j;
-                for (j = i; j < end; j++) {
-                    int ci = s.charAt(i) - 'a';
-                    if (lastPos[ci] > end) {
-                        end = lastPos[ci];
-                    }
-                }
-                res.add(j - i + 1);
-                i = end;
-            }
+    public int minCostClimbingStairs(int[] cost) {
+        int ans = 0;
+        // dp[i] 为越过 i 的最小花费
+        // dp[i] = min(dp[i -1]+, dpp 
+        int[] dp = new int[cost.length + 1];
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+        for (int i = 2; i < cost.length; i++) {
+            dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
         }
-        return res;
+        for (int i = 0; i < dp.length; i++) {
+            System.out.println("dp[" + i + "] = " + dp[i]);
+        }
+        return ans;
     }
 }
