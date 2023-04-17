@@ -68,14 +68,33 @@ class Solution {
     public int uniquePaths(int m, int n) {
         // dp[i][j] 表示从 (1, 1) 到 (i, j) 的路径数目
         int[][] dp = new int[m + 1][n + 1];
-        // dp[1][0] 无意义，只是为了方便计算使得 dp[1][1] 为 1
+        // dp[1][0] 无意义，只是为了方便计算使得 dp[1][1] 为 1，从而令 dp[1][*] 和 dp[*][1] 为 1
         dp[1][0] = 1;
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
             }
         }
-        return dp[m][n];
+        // return dp[m][n];
+
+        
+        // 方法二：转化为数学问题
+        // 从 (1, 1) 走到 (m, n) 且只能向右或向下，一共要走 m+n-2 步
+        // 从 step1、step2、step3 到 step(m+n-2) 中有 m-1 步向下，n-1 步向右
+        // 问题转化为从 m+n-2 中不重复地选 m-1 个数 或 从 m+n-2 中不重复地选 n-1 个数
+        // 注意：为防止连乘导致溢出，代码实现公式时要不断除以分母
+        long ans = 1; // 分子
+        int denominator = m - 1; // 分母
+        int count = m - 1;
+        int t = m + n - 2;
+        while (count-- != 0) {
+            ans *= (t--);
+            while (denominator != 0 && ans % denominator == 0) {
+                ans /= denominator;
+                denominator--;
+            }
+        }
+        return (int)ans;
     }
 }
 // @lc code=end
