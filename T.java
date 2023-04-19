@@ -128,22 +128,67 @@ public class T {
         List<String> list = new ArrayList<>();
         
         int[][] data = twoD("[[1,3],[2,6],[8,10],[15,18]]", 4, 2);
-        new T().minCostClimbingStairs(new int[]{1,100,1,1,1,100,1,1,100,1});
-
+        // -2-7+4-1+8-1
+        new T().lastStoneWeightII(new int[]{4});
+        int aaa =  new T().lastStoneWeightII(new int[]{2,7,4,1,8,1});
+        int bbb = 1;
     }
-    public int minCostClimbingStairs(int[] cost) {
-        int ans = 0;
-        // dp[i] 为越过 i 的最小花费
-        // dp[i] = min(dp[i -1]+, dpp 
-        int[] dp = new int[cost.length + 1];
-        dp[0] = cost[0];
-        dp[1] = cost[1];
-        for (int i = 2; i < cost.length; i++) {
-            dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
+    int target;
+    int ans = Integer.MAX_VALUE;
+    public int lastStoneWeightII(int[] stones) {
+        // 问题转化为：
+        // 将给定的数组分为两个子集，欲求这两个子集的和的最小差值 
+        // 答案求的两个子集就分别是 小于等于 sum/2 的最大和子集、大于等于 sum/2 的最小和子集
+        int sum = 0;
+        for (int i = 0; i < stones.length; i++) {
+            sum += stones[i];
         }
-        for (int i = 0; i < dp.length; i++) {
-            System.out.println("dp[" + i + "] = " + dp[i]);
+        target = sum / 2;
+        Arrays.sort(stones);
+
+        // 通过回溯找和大于等于 sum/2 的最小子集
+        // 从大端开始
+        backtracking(stones, stones.length - 1, 0);
+
+        return Math.abs(sum - 2 * ans); 
+    
+    }
+    
+    // 返回值表示是否还要继续找
+    private boolean backtracking(int[] stones, int idx, int sum) { //找大于target的最小ns
+        
+        // 直接速通，找到了最终答案 0 或 1
+        // sum 为奇数，最终答案为 1
+        // sum 为偶数，最终答案为 0
+        if (sum == target) {
+            ans = target;
+            return false;
+        } 
+
+        // 剪枝
+        // 若 sum >= ans，后续操作必定也 > ans
+        // 故跳过此次
+        if (sum >= ans) {
+            return true;
         }
-        return ans;
+
+        // 从后到前遍历完了一遍数组
+        if (idx < 0) {
+            // 子集和大于等于 sum/2
+            // 判断其是不是所有答案中和最小的
+            if (sum >= target){
+                ans = Math.min(sum, ans);
+            }
+            return true; 
+        }
+
+        // 先选，再不选，使尽早出现 sum >= target
+        if (backtracking(stones, idx - 1, sum + stones[idx]) == true) {
+            return backtracking(stones, idx - 1, sum); 
+        }
+
+        // 运行到此处，表明 backtracking(stones, idx - 1, sum + stones[idx]) == false
+        // 即在 backtracking(stones, idx - 1, sum + stones[idx]) 中已经找到了最终结果使 sum == target
+        return false;
     }
 }
