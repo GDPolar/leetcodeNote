@@ -121,7 +121,7 @@ public class T {
         }
         return res;
     }
-
+    static int countAfter = 0;
     public static void main(String[] args) {
         int[] a = new int[1];
         int[][] aa = new int[1][];
@@ -129,13 +129,45 @@ public class T {
         
         int[][] data = twoD("[[1,3],[2,6],[8,10],[15,18]]", 4, 2);
         // -2-7+4-1+8-1
-        new T().lastStoneWeightII(new int[]{4});
-        int aaa =  new T().lastStoneWeightII(new int[]{2,7,4,1,8,1});
-        int bbb = 1;
+        new T().lastStoneWeightII(new int[]{31,26,33,21,40});
+        int aaa =  new T().lastStoneWeightII(new int[]{35,33,30,25,19,11,53,40,36,10,31,23,26,13,14,18,33,22,16,22,16,28,16,72,25,23,19});
+        System.out.println(countAfter);
     }
+
+    public int lastStoneWeightII(int[] stones) {
+        int sum = 0;
+        for (int i = 0; i < stones.length; i++) {
+            sum += stones[i];
+        }
+        int target = sum / 2;
+        int[][] dp = new int[stones.length][target + 1];
+        // 初始化
+        for (int i = stones[0]; i < dp[0].length; i++) {
+            dp[0][i] = stones[0];
+        }
+
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                if (j < stones[i]) {
+                    dp[i][j] = dp[i - 1][j];
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], stones[i] + dp[i - 1][j - stones[i]]);
+                }
+            }
+        }
+        int ans = 0;
+        for (int i = dp[0].length - 1; i >= 0; i--) {
+            if (dp[dp.length - 1][i] != 0) {
+                ans = dp[dp.length - 1][i];
+                break;
+            }
+        }
+        return Math.abs(sum - 2 * ans);
+    }
+
     int target;
     int ans = Integer.MAX_VALUE;
-    public int lastStoneWeightII(int[] stones) {
+    public int lastStoneWeightI(int[] stones) {
         // 问题转化为：
         // 将给定的数组分为两个子集，欲求这两个子集的和的最小差值 
         // 答案求的两个子集就分别是 小于等于 sum/2 的最大和子集、大于等于 sum/2 的最小和子集
@@ -174,6 +206,7 @@ public class T {
 
         // 从后到前遍历完了一遍数组
         if (idx < 0) {
+            countAfter++;
             // 子集和大于等于 sum/2
             // 判断其是不是所有答案中和最小的
             if (sum >= target){

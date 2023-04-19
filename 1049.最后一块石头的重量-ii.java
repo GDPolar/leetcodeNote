@@ -60,9 +60,44 @@ import java.util.Arrays;
 
 // @lc code=start
 class Solution {
+
+    // 注意方法二中的剪枝！
+
+    // 方法一：dp
+    // 背包容量为 sum/2 
+    // 第 i 个物品的重量、价值为 stones[i]，性价比都一样
+    // 故欲使背包装满得到的总价值最大 等价于 背包装的重量最大
+    public int lastStoneWeightII(int[] stones) {
+        int sum = 0;
+        for (int i = 0; i < stones.length; i++) {
+            sum += stones[i];
+        }
+        int target = sum / 2;
+        int[][] dp = new int[stones.length][target + 1];
+
+        // 初始化第一行
+        for (int i = stones[0]; i < dp[0].length; i++) {
+            dp[0][i] = stones[0];
+        }
+
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                if (j < stones[i]) {
+                    dp[i][j] = dp[i - 1][j];
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], stones[i] + dp[i - 1][j - stones[i]]);
+                }
+            }
+        }
+
+        return Math.abs(sum - 2 * dp[dp.length - 1][dp[0].length - 1]);
+    }
+
+    /*
+    // 方法二：回溯。剪枝后速度比方法一快，为 0 ms
     int target;
     int ans = Integer.MAX_VALUE;
-    public int lastStoneWeightII(int[] stones) {
+    public int lastStoneWeightI(int[] stones) {
         // 问题转化为：
         // 将给定的数组分为两个子集，欲求这两个子集的和的最小差值 
         // 答案求的两个子集就分别是 小于等于 sum/2 的最大和子集、大于等于 sum/2 的最小和子集
@@ -79,7 +114,6 @@ class Solution {
         backtracking(stones, stones.length - 1, 0);
 
         return Math.abs(sum - 2 * ans); 
-    
     }
     
     // 返回值表示是否还要继续找
@@ -94,8 +128,8 @@ class Solution {
         } 
 
         // 剪枝
-        // 若 sum >= ans，后续操作必定也 >= ans
-        // 故跳过此次
+        // 若 sum >= ans，后续操作必定也 >= ans，故跳过此次
+        // 能减少 99.9744% 的时间
         if (sum >= ans) {
             return true;
         }
@@ -119,6 +153,7 @@ class Solution {
         // 即在 backtracking(stones, index - 1, sum + stones[index]) 中已经找到了最终结果使 sum == target
         return false;
     }
+    */
 }
 // @lc code=end
 
