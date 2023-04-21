@@ -129,7 +129,7 @@ class Solution {
 
         // 剪枝
         // 若 sum >= ans，后续操作必定也 >= ans，故跳过此次
-        // 能减少 99.9744% 的时间
+        // 能减少 99.9744% 的耗时
         if (sum >= ans) {
             return true;
         }
