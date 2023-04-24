@@ -167,12 +167,86 @@ public class T {
         // int aaaa =  new T().lastStoneWeightI(new int[]{3,9,4,4});
         // int aaa =  new T().lastStoneWeightI(new int[]{35,33,30,25,19,11,53,40,36,10,31,23,26,13,14,18,33,22,16,22,16,28,16,72,25,23,19});
         //int aaa = new T().findTargetSumWays(new int[]{1,14,4,4,4,1,1,1}, 4);
-        int bbb = new T().findMaxForm(new String[]{"10","0","1"},1,1);
-        int aaa = new T().findMaxForm(new String[]{"10","0001","111001","1","0"}, 4, 3);
-    
+        //int bbb = new T().findMaxForm(new String[]{"10","0","1"},1,1);
+        //int aaa = new T().findMaxForm(new String[]{"10","0001","111001","1","0"}, 4, 3);
+        new T().nextGreaterElements(new int[]{1,4,2,4,4});
+        
+        
+        //int[] aaa = new T().dailyTemperatures(new int[]{73,74,75,71,69,72,76,73});
+    }
+
+    public int[] nextGreaterElements(int[] nums) {
+        int[] res = new int[nums.length];
+        Arrays.fill(res, -1);
+        int max = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[max]) {
+                max = i;
+            }
+        }
+        Deque<Integer> stack = new LinkedList<>();
+        stack.push(max);
+        for (int i = 1; i <= nums.length; i++) {
+            int curr = (max + i) % nums.length;
+            if (nums[curr] == nums[max]) {
+                res[curr] = -1;
+            } else {
+                while (!stack.isEmpty() && nums[curr] > nums[stack.peek()]) {
+                    res[stack.peek()] = nums[curr];
+                    stack.pop();
+                }
+                stack.push(curr);
+            }
+        }
+        // 最大值不唯一
+        return res;
     }
 
 
+    public int[] dailyTemperatures(int[] temperatures) {
+        // // 要寻找任一个元素的右边或者左边第一个比自己大或者小的元素的位置，用单调栈
+        // int[] ans = new int[temperatures.length];
+        // if (temperatures.length == 1) {
+        //     return ans;
+        // }
+        // Deque<Integer> stack = new LinkedList<>();
+        // // 栈内存放的是 index
+        // // 栈底到栈顶，由大到小，这样从左遍历数组就能找到每个元素右侧第一个大于自己的元素   
+        // stack.push(0);
+        // for (int i = 1; i < temperatures.length; i++) {
+        //     while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
+        //         ans[stack.peek()] = i - stack.pop();
+        //     }
+        //     stack.push(i);
+        // }
+        // return ans;
+
+
+        int[] res = new int[temperatures.length];
+        if (temperatures.length == 1) {
+            return res;
+        }
+        int temp = temperatures.length - 1;
+        for (int i = temperatures.length - 2; i >=0; i--) {
+            if (temperatures[i] < temperatures[i + 1]) {
+                res[i] = 1;
+            } else {
+                int j;
+                for (j = i; j <= temp; j++) {
+                    if (temperatures[j] > temperatures[i]) {
+                        break;
+                    }
+                }
+                if (j > temp) {
+                    temp = i;
+                    res[i] = 0;
+                } else {
+                    res[i] = j - i;
+                }
+            }
+        }
+        return res;
+    }
 
 
     public int findTargetSumWays(int[] nums, int target) {
