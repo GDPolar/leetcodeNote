@@ -17,8 +17,14 @@ class TreeNode {
     int val;
     TreeNode left;
     TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
+
+    TreeNode() {
+    }
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
     TreeNode(int val, TreeNode left, TreeNode right) {
         this.val = val;
         this.left = left;
@@ -29,9 +35,18 @@ class TreeNode {
 class ListNode {
     int val;
     ListNode next;
-    ListNode() {}
-    ListNode(int val) { this.val = val; }
-    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+    ListNode() {
+    }
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
 }
 
 class Node {
@@ -40,8 +55,9 @@ class Node {
     public Node right;
     public Node next;
 
-    public Node() {}
-    
+    public Node() {
+    }
+
     public Node(int _val) {
         val = _val;
     }
@@ -52,13 +68,12 @@ class Node {
         right = _right;
         next = _next;
     }
-}; 
-
+};
 
 public class T {
     // 字符串转为二叉树树
-    public static TreeNode retree(String s){
-        String rs = s.substring(1,s.length()-1);
+    public static TreeNode retree(String s) {
+        String rs = s.substring(1, s.length() - 1);
         String[] valarr = rs.split(",");
         int len = valarr.length;
         int i = 0;
@@ -66,15 +81,15 @@ public class T {
         Deque<TreeNode> deque = new LinkedList<>();
         deque.addLast(head);
         i++;
-        while (i<len){
+        while (i < len) {
             TreeNode root = deque.pollFirst();
-            if(i<len&&!"null".equals(valarr[i])){
+            if (i < len && !"null".equals(valarr[i])) {
                 root.left = new TreeNode(renumber(valarr[i]));
                 deque.addLast(root.left);
 
             }
             i++;
-            if(i<len&&!"null".equals(valarr[i])){
+            if (i < len && !"null".equals(valarr[i])) {
                 root.right = new TreeNode(renumber(valarr[i]));
                 deque.addLast(root.right);
             }
@@ -82,11 +97,12 @@ public class T {
         }
         return head;
     }
-    private static int renumber(String s){
+
+    private static int renumber(String s) {
         char[] arr = s.toCharArray();
         int res = 0;
-        for(int i = 0;i<arr.length;i++){
-            res = res*10+(int)(arr[i]-'0');
+        for (int i = 0; i < arr.length; i++) {
+            res = res * 10 + (int) (arr[i] - '0');
         }
         return res;
     }
@@ -150,63 +166,95 @@ public class T {
         }
         System.out.print("]");
     }
-    
 
     static int countAfter = 0;
     ArrayList<Integer> list = new ArrayList<>();
+
     public static void main(String[] args) {
         int[] a = new int[1];
         int[][] aa = new int[1][];
         List<String> list = new ArrayList<>();
         T t = new T();
-        //t.printArray(new int[]{31,26,33,21,40} );
+        // t.printArray(new int[]{31,26,33,21,40} );
         int[][] data = twoD("[[1,3],[2,6],[8,10],[15,18]]", 4, 2);
-        //t.printArray(data);
+        // t.printArray(data);
         // -2-7+4-1+8-1
-        //new T().lastStoneWeightII(new int[]{31,26,33,21,40});
-        // int aaaa =  new T().lastStoneWeightI(new int[]{3,9,4,4});
-        // int aaa =  new T().lastStoneWeightI(new int[]{35,33,30,25,19,11,53,40,36,10,31,23,26,13,14,18,33,22,16,22,16,28,16,72,25,23,19});
-        //int aaa = new T().findTargetSumWays(new int[]{1,14,4,4,4,1,1,1}, 4);
-        //int bbb = new T().findMaxForm(new String[]{"10","0","1"},1,1);
-        //int aaa = new T().findMaxForm(new String[]{"10","0001","111001","1","0"}, 4, 3);
-        //new T().nextGreaterElements(new int[]{1,4,2,4,4});
-        
-        
-        
+        // new T().lastStoneWeightII(new int[]{31,26,33,21,40});
+        // int aaaa = new T().lastStoneWeightI(new int[]{3,9,4,4});
+        // int aaa = new T().lastStoneWeightI(new
+        // int[]{35,33,30,25,19,11,53,40,36,10,31,23,26,13,14,18,33,22,16,22,16,28,16,72,25,23,19});
+        // int aaa = new T().findTargetSumWays(new int[]{1,14,4,4,4,1,1,1}, 4);
+        // int bbb = new T().findMaxForm(new String[]{"10","0","1"},1,1);
+        // int aaa = new T().findMaxForm(new String[]{"10","0001","111001","1","0"}, 4,
+        // 3);
+        // new T().nextGreaterElements(new int[]{1,4,2,4,4});
+
         // int f = 1;
         // int max;
         // int[] aaa = new int[20000000];
         // for (int i = 0; i < aaa.length; i++) {
-        //     aaa[i] = new Random().nextInt(100);
+        // aaa[i] = new Random().nextInt(100);
         // }
 
-        // long b =  System.currentTimeMillis();
+        // long b = System.currentTimeMillis();
         // for (long i = 0; i < 100l; i++) {
-        //     max = aaa[0];
-        //     for (int j = 0; j < aaa.length; j++) {
-        //         if (max < aaa[j]) {
-        //             max = aaa[j];
-        //         } 
-        //     }
+        // max = aaa[0];
+        // for (int j = 0; j < aaa.length; j++) {
+        // if (max < aaa[j]) {
+        // max = aaa[j];
+        // }
+        // }
         // }
         // System.out.println( System.currentTimeMillis() - b);
-        
-        // b =  System.currentTimeMillis();
+
+        // b = System.currentTimeMillis();
         // for (long i = 0; i < 100l; i++) {
-        //     max = aaa[0];
-        //     for (int j = 0; j < aaa.length; j++) {
-        //         max = Math.max(max, aaa[j]);
-        //     }
+        // max = aaa[0];
+        // for (int j = 0; j < aaa.length; j++) {
+        // max = Math.max(max, aaa[j]);
+        // }
         // }
         // System.out.println( System.currentTimeMillis() - b);
-  
-        //int[] aaa = new T().dailyTemperatures(new int[]{73,74,75,71,69,72,76,73});
-        //new T().trap(new int[]{4,2,0,3,2,5});
-    
-    
+
+        // int[] aaa = new T().dailyTemperatures(new int[]{73,74,75,71,69,72,76,73});
+        new T().largestRectangleArea(new int[]{2,1,5,6,2,3});
+
+        // return ans;
     }
 
+    public int largestRectangleArea(int[] heights) {
 
-        return ans;
+        int[] minLeftIndex = new int[heights.length];
+        int[] minRightIndex = new int[heights.length];
+        int size = heights.length;
+
+        // 初始化，防止下面while死循环
+        minLeftIndex[0] = -1; 
+        for (int i = 1; i < size; i++) {
+            int t = i - 1;
+            // 这里不是用 if，而是不断向左寻找
+            while (t >= 0 && heights[t] >= heights[i]) {
+                t = minLeftIndex[t];
+            }
+            minLeftIndex[i] = t;
+        }
+        // 记录每个柱子 右边第一个小于该柱子的下标
+        minRightIndex[size - 1] = size; // 注意这里初始化，防止下面while死循环
+        for (int i = size - 2; i >= 0; i--) {
+            int t = i + 1;
+            // 这里不是用 if，而是不断向右寻找的
+            while (t < size && heights[t] >= heights[i]) {
+                t = minRightIndex[t];
+            }
+            minRightIndex[i] = t;
+        }
+        // 求和
+        int result = 0;
+        for (int i = 0; i < size; i++) {
+            int sum = heights[i] * (minRightIndex[i] - minLeftIndex[i] - 1);
+            result = Math.max(sum, result);
+        }
+        return result;
+
     }
 }

@@ -47,9 +47,14 @@
  */
 
 // @lc code=start
+
+import java.util.Deque;
+import java.util.LinkedList;
+
 class Solution {
     public int trap(int[] height) {
         // 方法一：
+        // 按列 dp
         int ans = 0;
         int[] lMaxHeight = new int[height.length];
         int[] rMaxHeight = new int[height.length];
@@ -69,13 +74,63 @@ class Solution {
             if (min > height[i]) {
                 ans += min - height[i];
             }
-            // [2, 1, _ 1, 2]
         }
         // return ans;
 
+
         // 方法二：
-        ans = 0;
+        // 单调栈（行）
+        Deque<Integer> stack = new LinkedList<>();
+        stack.push(0);
+        int res = 0;
+        for (int i = 1; i < height.length; i++) {
+            while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+                int curHeight = height[stack.pop()];
+                if (stack.isEmpty()) {
+                    // 左侧不积水
+                    break;
+                }
+                // 此时 stack.peek() 为左墙壁，i 为右墙壁
+                int distance = i - stack.peek() - 1;
+                int min = Math.min(height[i], height[stack.peek()]);
+                // 长为 distance，宽为 min - curHeight 的矩形
+                res += (min - curHeight) * distance;
+            }
+            stack.push(i);
+        }
+        return res;
+
+        /*
+        // 方法三：
+        // 按行暴力
+        int max = height[0];
+        for (int i = 1; i < height.length; i++) {
+            if (height[i] > max) {
+                max = height[i];
+            }
+        }
+        int ans = 0;
+        for (int i = 1; i <= max; i++) {
+            // 左侧不积水，故用 flag 用来处理
+            boolean flag = false;
+            int temp = 0;
+            for (int j = 0; j < height.length; j++) {
+                if (height[j] < i && flag == true) {
+                    temp++;
+                }
+                if (height[j] >= i) {
+                    if (flag == true) {
+                        ans += temp;
+                        temp = 0;
+                    }
+                    flag = true;
+                }
+            }
+            // 右侧不积水，此时即使 temp > 0 也不会计入
+        }
+        
         return ans;
+         */
     }
 }
 // @lc code=end
