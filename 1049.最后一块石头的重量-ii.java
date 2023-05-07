@@ -89,27 +89,29 @@ class Solution {
                 }
             }
         }
-
-        return Math.abs(sum - 2 * dp[dp.length - 1][dp[0].length - 1]);
+        return sum - 2 * dp[dp.length - 1][dp[0].length - 1];
+        
     }
 
-    /*
+    
     // 方法二：回溯。剪枝后速度比方法一快，为 0 ms
     int target;
     int ans = Integer.MAX_VALUE;
     public int lastStoneWeightI(int[] stones) {
         // 问题转化为：
         // 将给定的数组分为两个子集，欲求这两个子集的和的最小差值 
-        // 答案求的两个子集就分别是 小于等于 sum/2 的最大和子集、大于等于 sum/2 的最小和子集
+        // 答案求的两个子集就分别是 和小于等于 sum/2 的最大和子集、和大于等于 sum/2 的最小和子集
         int sum = 0;
         for (int i = 0; i < stones.length; i++) {
             sum += stones[i];
         }
         target = sum / 2;
+
+        // 使尽早出现 currentSum >= target
         Arrays.sort(stones);
 
         // 通过回溯找和大于等于 sum/2 的最小子集
-        // 即使 sum >= target 的条件下尽可能地小
+        // 即使 currentSum >= target 的条件下尽可能地小
         // 从大端开始
         backtracking(stones, stones.length - 1, 0);
 
@@ -117,43 +119,39 @@ class Solution {
     }
     
     // 返回值表示是否还要继续找
-    private boolean backtracking(int[] stones, int index, int sum) { //找大于target的最小ns
+    private boolean backtracking(int[] stones, int candidateIndex, int currentSum) { //找大于target的最小ns
         
         // 直接速通，找到了最终答案
         // sum 为奇数，最终答案为 1
         // sum 为偶数，最终答案为 0
-        if (sum == target) {
+        if (currentSum == target) {
             ans = target;
             return false;
         } 
 
         // 剪枝
-        // 若 sum >= ans，后续操作必定也 >= ans，故跳过此次
+        // 若 currentSum >= ans，后续操作必定使得 currentSum 越来越大，故跳过此次
         // 能减少 99.9744% 的耗时
-        if (sum >= ans) {
+        if (currentSum >= ans) {
             return true;
         }
 
         // 从后到前遍历完了一遍数组
-        if (index < 0) {
-            // 子集和大于等于 sum/2
+        if (candidateIndex < 0) {
+            // 若子集和大于等于 sum/2
             // 判断其是不是所有答案中和最小的
-            if (sum >= target){
-                ans = Math.min(sum, ans);
+            if (currentSum >= target){
+                ans = Math.min(currentSum, ans);
             }
             return true; 
         }
 
-        // 先选，再不选，使尽早出现 sum >= target
-        if (backtracking(stones, index - 1, sum + stones[index]) == true) {
-            return backtracking(stones, index - 1, sum); 
-        }
-
-        // 运行到此处，表明 backtracking(stones, index - 1, sum + stones[index]) == false
-        // 即在 backtracking(stones, index - 1, sum + stones[index]) 中已经找到了最终结果使 sum == target
-        return false;
+        // 利用短路原理，若前项表达式为 false（此处即意味着已经速通），则跳过后项表达式
+        // 先选，再不选，使尽早出现 currentSum >= target
+        return backtracking(stones, candidateIndex - 1, currentSum + stones[candidateIndex]) && 
+            backtracking(stones, candidateIndex - 1, currentSum); 
     }
-    */
+    
 }
 // @lc code=end
 
