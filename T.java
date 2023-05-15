@@ -217,44 +217,44 @@ public class T {
         // System.out.println( System.currentTimeMillis() - b);
 
         // int[] aaa = new T().dailyTemperatures(new int[]{73,74,75,71,69,72,76,73});
-        new T().largestRectangleArea(new int[]{2,1,5,6,2,3});
+        new T().numSquares(13);
+
 
         // return ans;
     }
 
-    public int largestRectangleArea(int[] heights) {
-
-        int[] minLeftIndex = new int[heights.length];
-        int[] minRightIndex = new int[heights.length];
-        int size = heights.length;
-
-        // 初始化，防止下面while死循环
-        minLeftIndex[0] = -1; 
-        for (int i = 1; i < size; i++) {
-            int t = i - 1;
-            // 这里不是用 if，而是不断向左寻找
-            while (t >= 0 && heights[t] >= heights[i]) {
-                t = minLeftIndex[t];
+    public int numSquares(int n) {
+        ArrayList<Integer> nums = new ArrayList<>();
+        for (int i = 1; ; i++) {
+            int t = i * i;
+            if (t == n) {
+                return 1;
+            } else if (t > n) {
+                break;
+            } else {
+                nums.add(t);
             }
-            minLeftIndex[i] = t;
         }
-        // 记录每个柱子 右边第一个小于该柱子的下标
-        minRightIndex[size - 1] = size; // 注意这里初始化，防止下面while死循环
-        for (int i = size - 2; i >= 0; i--) {
-            int t = i + 1;
-            // 这里不是用 if，而是不断向右寻找的
-            while (t < size && heights[t] >= heights[i]) {
-                t = minRightIndex[t];
+        // 用 nums 中的数字填满容量为 n 的完全背包
+        int[] dp = new int[n + 1];
+        // 第一行
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        int t = nums.get(0);
+        for (int j = t; j < dp.length; j++) {
+            if (j % t == 0) {
+                dp[j] = j / t;
             }
-            minRightIndex[i] = t;
         }
-        // 求和
-        int result = 0;
-        for (int i = 0; i < size; i++) {
-            int sum = heights[i] * (minRightIndex[i] - minLeftIndex[i] - 1);
-            result = Math.max(sum, result);
-        }
-        return result;
 
+        for (int i = 1; i < nums.size(); i++) {
+            t = nums.get(i);
+            for (int j = t; j < dp.length; j++) {
+                for (int k = 1; j >= t * k; k++) {
+                    dp[j] = Math.min(dp[j], dp[j - t * k] + k);
+                }
+            }
+        }
+        return dp[dp.length - 1];
     }
 }

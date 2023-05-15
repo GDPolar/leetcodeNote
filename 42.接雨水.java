@@ -69,7 +69,7 @@ class Solution {
         }
         // 两侧不积水
         for (int i = 1; i < height.length - 1; i++) {
-            // 当前列积水高度 = min（左边柱子的最高高度，记录右边柱子的最高高度）- 当前柱子高度
+            // 当前列积水高度 = min（左边柱子的最高高度，右边柱子的最高高度）- 当前柱子高度
             int min = Math.min(lMaxHeight[i], rMaxHeight[i]);
             if (min > height[i]) {
                 ans += min - height[i];
@@ -84,6 +84,7 @@ class Solution {
         stack.push(0);
         int res = 0;
         for (int i = 1; i < height.length; i++) {
+            // 栈底到栈顶从高到低
             while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
                 int curHeight = height[stack.pop()];
                 if (stack.isEmpty()) {

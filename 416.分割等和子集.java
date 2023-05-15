@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.plaf.TextUI;
 
 /*
  * @lc app=leetcode.cn id=416 lang=java
@@ -105,7 +104,7 @@ class Solution {
         */
 
         // 方法二： 
-        // dp[i][j] 代表考虑前 i 个数值，其选择数字总和是否恰好为 j，则可根据 dp2[i][dp2[i].length - 1] 是否为 true 直接求解
+        // dp[i][j] 代表考虑前 i 个数值，其选择数字总和是否恰好为 j，则可根据 dp[i][dp[i].length - 1] 是否为 true 直接求解
         int sum = 0;
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
