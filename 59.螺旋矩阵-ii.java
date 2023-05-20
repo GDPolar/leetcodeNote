@@ -6,6 +6,8 @@
 
 // @lc code=start
 class Solution {
+    // 遵循循环不变量原则 
+    // 每画一条边都要坚持一致的左闭右开，或者左开右闭原则，这样这一圈才能按照统一的规则画下来
     public int[][] generateMatrix(int n) {
         int[][] res = new int[n][n];
         int num = 1;

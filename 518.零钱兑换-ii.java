@@ -69,7 +69,15 @@
 // @lc code=start
 class Solution {
     public int change(int amount, int[] coins) {
-        
+        int[] dp = new int[amount + 1];
+        // 第一行为不选任何元素。装满容量为 0 的背包有 1 种方法
+        dp[0] = 1;
+        for (int i = 1; i < coins.length + 1; i++) {
+            for (int j = coins[i - 1]; j < dp.length; j++) {
+                dp[j] += dp[j - coins[i - 1]];
+            }
+        }
+        return dp[dp.length - 1];
     }
 }
 // @lc code=end
