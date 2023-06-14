@@ -73,8 +73,9 @@ class Solution {
         // 第一行为不选任何元素。装满容量为 0 的背包有 1 种方法
         dp[0] = 1;
         for (int i = 1; i < coins.length + 1; i++) {
-            for (int j = coins[i - 1]; j < dp.length; j++) {
-                dp[j] += dp[j - coins[i - 1]];
+            int index = i - 1;
+            for (int j = coins[index]; j < dp.length; j++) {
+                dp[j] += dp[j - coins[index]];
             }
         }
         return dp[dp.length - 1];

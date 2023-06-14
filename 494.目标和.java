@@ -75,6 +75,8 @@ class Solution {
         int capacity = (sum + target) / 2;
         int[] dp = new int[capacity + 1];
         dp[0] = 1;
+        // dp[i][j] = dp[i - 1][j]
+        // dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i]]
         for (int i = 0; i < nums.length; i++) {
             // dp[j] 表示选用 nums[0:i] 的元素填满容积为 j 的背包，有 dp[j] 种填法
             for (int j = dp.length - 1; j >= nums[i]; j--) {

@@ -64,10 +64,18 @@
 class Solution {
     public int combinationSum4(int[] nums, int target) {
         int[] dp = new int[target + 1];
+        // dp[i][j] 表示在前 i 个数中选和为 j，有多少种选法
         dp[0] = 1;
-        for (int i = 1; i <= nums.length; i++) {
-            
+        // 若外层为物品数，则 dp[0] = 1，dp[1] = 5，相当于先放入1，再放入5
+        // 完全背包中
+        // 若物品 A 和物品 B 的选择 {A, B} 和 {B, A} 必须看作同一种选择，则外层为物品数，内层为容量
+        // 若物品 A 和物品 B 的选择 {A, B} 和 {B, A} 必须看作不同种选择，则外层为容量，内层为物品数
+        for (int j = 0; j <= target; j++) {
+            for (int i = 0; i < nums.length; i++) {
+                if (j >= nums[i]) dp[j] += dp[j - nums[i]];
+            }
         }
+        return dp[dp.length - 1];
     }
 }
 // @lc code=end

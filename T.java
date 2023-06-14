@@ -147,6 +147,19 @@ public class T {
             }
         }
         System.out.print("]");
+        System.out.println();
+    }
+
+    public void printArray(long[] array) {
+        System.out.print("[");
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(array[i]);
+            if (i < array.length - 1) {
+                System.out.print(",");
+            }
+        }
+        System.out.print("]");
+        System.out.println();
     }
 
     public void printArray(int[][] array) {
@@ -217,10 +230,89 @@ public class T {
         // System.out.println( System.currentTimeMillis() - b);
 
         // int[] aaa = new T().dailyTemperatures(new int[]{73,74,75,71,69,72,76,73});
-        new T().numSquares(13);
-
+        new T().rob(retree("[3,2,3,null,3,null,1]"));
 
         // return ans;
+    }
+
+    public int rob(TreeNode root) {
+        if (root == null) {
+            return 0;
+        } 
+        int no = rob(root.left) + rob(root.right);
+        int yes = root.val;
+        if (root.left != null) {
+            yes += rob(root.left);
+            yes += rob(root.left.right);
+        }
+        if (root.right != null) {
+            yes += rob(root.right);
+            yes += rob(root.right.right);
+        }
+        return Math.max(no, yes);
+    }
+
+    public int rob2(int[] nums) {
+        // 假设数组长度为5，则下标为 0,1,2,3,4
+        // 考虑从下标 1 到 下标 3 中选得到的最大价值 A
+        // 考虑从下标 0 到 下标 3 中选得到的最大价值 B
+        //      如果 B 没有选下标 0，那么 B 等于 A
+        //      如果 B 选了下标 0，那么 B 大于或等于 A
+        //      即 B >= A
+        // 考虑从下标 1 到 下标 4 中选得到的最大价值 C
+        //      如果 C 没有选下标 4，那么 C 等于 A
+        //      如果 C 选了下标 4，那么 C 大于或等于 A
+        //      即 C >= A
+        // 考虑从下标 0 到 下标 4 中选得到的最大价值 D
+        //      如果 D 没有选下标 0，没有选下标 4，那么 D 等于 A
+        //      如果 D 没有选下标 0，选了下标 4，那么 D 等于 C
+        //      如果 D 没有选下标 4，选了下标 0，那么 D 等于 B
+        //      即 D = Max(A, B, C) = Max(B, C)
+
+        return Math.max(f(nums, 0, nums.length - 1), f(nums, 1, nums.length));
+    }
+
+
+    public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
+        
+        int sum = 0;
+        // dp[i][j][k] 表示从前 i 个工作中选择，消耗人数不超过 j，利润至少为 k 的方案数
+        // dp[i][j][k] 
+        // dp[i - 1][j][k]  dp[i][j - group[i]][k - profit[i]]
+        int mod = (int)(1e9 + 7);
+        int[][][] dp = new int[group.length + 1][n + 1][minProfit + 1];
+        
+        // dp[0][j][0] 表示不选任何工作，消耗人数不超过 j，利润大于等于 0 的方案数
+        // 有且只有一种情况
+        // dp[0][j][k], k > 0 表示不选任何工作，消耗人数不超过 j，利润大于 0 的方案数
+        // 没有任何情况满足，都为 0
+        for (int j = 0; j < dp[0].length; j++) {
+            dp[0][j][0] = 1;
+        }        
+        for (int i = 1; i < dp.length; i++) {
+            int index = i - 1;
+            for (int j = 0; j < dp[0].length; j++) {
+                for (int k = 0; k < dp[0][0].length; k++) {
+                    // 不选当前工作
+                    dp[i][j][k] = dp[i - 1][j][k];
+                    // 注意考虑转移方程时对应的实际意义！
+                    // 此题中利润大于等于一个负数是合理的，数值上等价于利润为 0
+                    if (j >= group[index]) {
+                        // 可选当前工作
+                        dp[i][j][k] += dp[i - 1][j - group[index]][Math.max(0, k - profit[index])];
+                        dp[i][j][k] %= mod;
+                    }
+
+                }
+            }
+        }
+        // 567 568 578
+        // 23  23  26
+        int ans = 0;
+        for (int i = minProfit; i < dp[0].length; i++) {
+            
+        }
+        return ans;
     }
 
     public int numSquares(int n) {
