@@ -86,7 +86,6 @@ public class T {
             if (i < len && !"null".equals(valarr[i])) {
                 root.left = new TreeNode(renumber(valarr[i]));
                 deque.addLast(root.left);
-
             }
             i++;
             if (i < len && !"null".equals(valarr[i])) {
@@ -230,9 +229,39 @@ public class T {
         // System.out.println( System.currentTimeMillis() - b);
 
         // int[] aaa = new T().dailyTemperatures(new int[]{73,74,75,71,69,72,76,73});
-        new T().rob(retree("[3,2,3,null,3,null,1]"));
+        new T().maxProfit(new int[]{1,2,3,4,5});
 
         // return ans;
+    }
+
+
+    public int maxProfit(int[] prices) {
+        if (prices.length < 2) {
+            return 0;
+        }
+        int res = Integer.MIN_VALUE;
+        for (int i = 1; i < prices.length; i++) {
+            int le = getMax(prices, 0, i);
+            int ri = getMax(prices, i, prices.length);
+            System.out.println("le = " + le + ", ri = " + ri);
+            res = Math.max(res, le + ri);
+        }
+        return res;
+    }
+
+    public int getMax(int[] prices, int begin, int end) {
+
+        int in = Integer.MAX_VALUE;
+        int res = 0;
+        // 只能买一次，则用贪心
+        for (int i = begin; i < end; i++) {
+            if (prices[i] <= in) {
+                in = prices[i];
+            } else {
+                res = Math.max(res, prices[i] - in);
+            }
+        }
+        return res;
     }
 
     public int rob(TreeNode root) {
@@ -252,25 +281,7 @@ public class T {
         return Math.max(no, yes);
     }
 
-    public int rob2(int[] nums) {
-        // 假设数组长度为5，则下标为 0,1,2,3,4
-        // 考虑从下标 1 到 下标 3 中选得到的最大价值 A
-        // 考虑从下标 0 到 下标 3 中选得到的最大价值 B
-        //      如果 B 没有选下标 0，那么 B 等于 A
-        //      如果 B 选了下标 0，那么 B 大于或等于 A
-        //      即 B >= A
-        // 考虑从下标 1 到 下标 4 中选得到的最大价值 C
-        //      如果 C 没有选下标 4，那么 C 等于 A
-        //      如果 C 选了下标 4，那么 C 大于或等于 A
-        //      即 C >= A
-        // 考虑从下标 0 到 下标 4 中选得到的最大价值 D
-        //      如果 D 没有选下标 0，没有选下标 4，那么 D 等于 A
-        //      如果 D 没有选下标 0，选了下标 4，那么 D 等于 C
-        //      如果 D 没有选下标 4，选了下标 0，那么 D 等于 B
-        //      即 D = Max(A, B, C) = Max(B, C)
 
-        return Math.max(f(nums, 0, nums.length - 1), f(nums, 1, nums.length));
-    }
 
 
     public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {

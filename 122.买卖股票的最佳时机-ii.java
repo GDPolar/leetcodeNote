@@ -61,6 +61,7 @@
 // @lc code=start
 class Solution {
     public int maxProfit(int[] prices) {
+        /*
         int ans = 0;
         for (int i = 0; i < prices.length - 1; i++) {
             if (prices[i] < prices[i + 1]) {
@@ -68,6 +69,20 @@ class Solution {
             }
         }   
         return ans;
+        */
+
+        // dp[i][0] 表示在第 i 天时已持有股票（第 i 天前已持有或第 i 天买入）的当前现金
+        // dp[i][1] 表示在第 i 天时未持有股票（第 i 天前未持有或第 i 天卖出）的当前现金
+        int[][] dp = new int[prices.length][2];
+        dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        for (int i = 1; i < dp.length; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][0] + prices[i], dp[i - 1][1]);
+        }
+
+        return dp[dp.length - 1][1];
+    
     }
 }
 // @lc code=end

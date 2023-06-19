@@ -74,25 +74,57 @@ import java.util.HashMap;
  * }
  */
 class Solution {
-    HashMap<TreeNode, Integer> map = new HashMap<TreeNode, Integer>();
+
     public int rob(TreeNode root) {
+        // 方法一：
+        // dp 思想，记录每一个节点选择或不选择当前节点获得的最大金额
+        // 0 表示选择，1 表示不选择
+        // 后序遍历，每个节点返回两个数字交由上层节点处理
+        int[] res = dp(root);
+        return Math.max(res[0], res[1]);
+    }
+
+    public int[] dp(TreeNode root) {
+        if (root == null) {
+            return new int[]{0, 0};
+        }
+        int[] left = dp(root.left);
+        int[] right = dp(root.right);  
+        int[] res = new int[2];
+        // 选择当前节点，则不能选择当前节点的孩子节点
+        res[0] = root.val + left[1] + right[1];
+        // 不选择当前节点，则可以选择或不选择当前节点的孩子节点
+        res[1] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+        return res;
+    }
+
+
+    // 方法二：记忆化优化暴力递归
+    // map 保存以 key 为根的树所能获取的最高金额
+    HashMap<TreeNode, Integer> map = new HashMap<TreeNode, Integer>();
+    public int rob1(TreeNode root) {
         if (root == null) {
             return 0;
         }
         if (map.containsKey(root)) {
             return map.get(root);
         }
+        // 叶子节点
         if (root.left == null && root.right == null) {
             map.put(root, root.val);
             return root.val;
         }
+        // 不选择当前节点，考虑选择当前节点的左孩子和右孩子
         int no = rob(root.left) + rob(root.right);
+        // 选择当前节点，则不可选择当前节点的左孩子和右孩子
         int yes = root.val;
         if (root.left != null) {
+            // 可以考虑当前节点左孩子的孩子节点
             yes += rob(root.left.left);
             yes += rob(root.left.right);
         }
         if (root.right != null) {
+            // 可以考虑当前节点右孩子的孩子节点
             yes += rob(root.right.left);
             yes += rob(root.right.right);
         }
