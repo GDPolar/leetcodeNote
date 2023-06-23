@@ -177,6 +177,7 @@ public class T {
             }
         }
         System.out.print("]");
+        System.out.println();
     }
 
     static int countAfter = 0;
@@ -229,26 +230,37 @@ public class T {
         // System.out.println( System.currentTimeMillis() - b);
 
         // int[] aaa = new T().dailyTemperatures(new int[]{73,74,75,71,69,72,76,73});
-        new T().maxProfit(new int[]{1,2,3,4,5});
+        new T().maxProfit(new int[]{1,2,3,0,2});
 
         // return ans;
     }
 
-
     public int maxProfit(int[] prices) {
-        if (prices.length < 2) {
-            return 0;
-        }
-        int res = Integer.MIN_VALUE;
-        for (int i = 1; i < prices.length; i++) {
-            int le = getMax(prices, 0, i);
-            int ri = getMax(prices, i, prices.length);
-            System.out.println("le = " + le + ", ri = " + ri);
-            res = Math.max(res, le + ri);
-        }
-        return res;
-    }
+        int[][] dp = new int[prices.length][4];
+        // dp[i][0] 一直未操作
+        // dp[i][1] 已买入
+        // dp[i][2] 已卖出，不是前一天卖出
+        // dp[i][3] 已卖出，前一天卖出，不可买入
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        dp[0][2] = 0;
+        dp[0][3] = 0;
 
+            printArray(dp);
+        for (int i = 1; i < dp.length; i++) {
+            dp[i][0] = 0;
+            dp[i][1] = max(dp[i - 1][1], -prices[i], dp[i][2] - prices[i]);
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1] + prices[i]);
+            if (i > 1) {
+                dp[i][3] = dp[i - 2][1] + prices[i - 1];
+            }
+            printArray(dp);
+        }
+        return Math.max(dp[dp.length - 1][2], dp[dp.length - 1][3]);
+    }
+    public int max(int a, int b, int c) {
+        return Math.max(Math.max(a, b), c);
+    }
     public int getMax(int[] prices, int begin, int end) {
 
         int in = Integer.MAX_VALUE;

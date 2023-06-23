@@ -96,24 +96,40 @@ class Solution {
         return res;
         */
 
+        /* 
         // dp[i][0] 表示在第 i 天前和第 i 天未操作的当前现金
         // dp[i][1] 表示在第 i 天时第一次已持有股票（第 i 天前已持有或第 i 天买入）的当前现金
         // dp[i][2] 表示在第 i 天时完成了第一次交易（第 i 天前已卖出或第 i 天卖出）的当前现金
         // dp[i][3] 表示在第 i 天时第二次已持有股票（第 i 天前已持有或第 i 天买入）的当前现金
         // dp[i][4] 表示在第 i 天时完成了第二次交易（第 i 天前已卖出或第 i 天卖出）的当前现金
-        int[][] dp = new int[prices.length][5];
+        int[][] dp = new int[prices.length + 1][5];
         // dp[i][0] 始终为 0
-        dp[0][1] = -prices[0];
+        dp[0][1] = Integer.MIN_VALUE;
         dp[0][2] = 0;
-        dp[0][3] = -prices[0];
+        dp[0][3] = Integer.MIN_VALUE;
         dp[0][4] = 0;
-        for (int i = 1; i < dp.length; i++) {
-            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
-            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1] + prices[i]);
-            dp[i][3] = Math.max(dp[i - 1][3], dp[i - 1][2] - prices[i]);
-            dp[i][4] = Math.max(dp[i - 1][4], dp[i - 1][3] + prices[i]);
+        for (int i = 1; i <= prices.length; i++) {
+            int index = i - 1;
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[index]);
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1] + prices[index]);
+            dp[i][3] = Math.max(dp[i - 1][3], dp[i - 1][2] - prices[index]);
+            dp[i][4] = Math.max(dp[i - 1][4], dp[i - 1][3] + prices[index]);
         }
         return dp[dp.length - 1][4];
+        */
+
+        // 优化空间后
+        int pro1 = -prices[0];
+        int pro2 = 0;
+        int pro3 = -prices[0];
+        int pro4 = 0;
+        for (int i = 1; i < prices.length; i++) {
+            pro4 = Math.max(pro4, pro3 + prices[i]);
+            pro3 = Math.max(pro3, pro2 - prices[i]);
+            pro2 = Math.max(pro2, pro1 + prices[i]);
+            pro1 = Math.max(pro1, - prices[i]);
+        }
+        return pro4;
     }
 }
 // @lc code=end
