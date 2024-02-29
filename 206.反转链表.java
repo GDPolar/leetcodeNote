@@ -48,7 +48,7 @@ class Solution {
         }
         // 将函数看作黑盒，输入一个链表的头节点，函数将链表反转，并返回反转后的头（即原链表的尾）
         // 输入 head.next，则反转从 head.next 到最后的链表
-        // 此时 head 仍指向反转后的链表，即 head.next 为反转后链表的尾
+        // 函数并未操作 head 所以此时 head.next 仍为原来的元素，即现在反转后链表的尾
         ListNode reHead = reverseList(head.next);
         head.next.next = head;
         head.next = null;

@@ -25,22 +25,18 @@
  */
 class Solution {
     public ListNode removeElements(ListNode head, int val) {
-        // 添加虚拟头节点
-        ListNode vhead = new ListNode();
-        vhead.next = head;
-        // 前后指针
-        ListNode p = vhead, q = p.next;
-        while (q != null) {
-            if (q.val == val) {
-                p.next = q.next;    
-                // 注意记得更新 q 指针
-                q = q.next;
-                continue;
-            } 
-            p = q;
-            q = q.next;
+        ListNode vHead = new ListNode();
+        vHead.next = head;
+        ListNode node = vHead;
+        while (node.next != null) {
+            if (node.next.val == val) {
+                node.next = node.next.next;
+                // 进行过删除操作后，指针不应移动
+            } else {
+                node = node.next;
+            }
         }
-        return vhead.next;
+        return vHead.next;
     }
 }
 // @lc code=end

@@ -25,7 +25,7 @@ class Solution {
         // 或者另一种 左闭右闭
         int left = 0, right = nums.length - 1;
         int middle;
-        // 当 left = right 时，不符合左闭右开
+        // 当 left = right 时，符合左闭右闭
         while(left <= right) {
             middle = (left + right) / 2;
             if (nums[middle] == target) {

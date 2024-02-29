@@ -103,6 +103,7 @@ class Solution {
         // dp[i][3] 表示在第 i 天时第二次已持有股票（第 i 天前已持有或第 i 天买入）的当前现金
         // dp[i][4] 表示在第 i 天时完成了第二次交易（第 i 天前已卖出或第 i 天卖出）的当前现金
         int[][] dp = new int[prices.length + 1][5];
+
         // dp[i][0] 始终为 0
         dp[0][1] = Integer.MIN_VALUE;
         dp[0][2] = 0;
