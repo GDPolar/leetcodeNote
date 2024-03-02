@@ -24,8 +24,9 @@ class ListNode {
  * }
  */
 class Solution {
-    // 让快指针先移动n步，然后让两指针同时移动，直到快指针指向链表末尾时，删掉慢指针所指向的节点即可
+    // 让快指针先移动 n 步，然后让两指针同时移动，直到快指针指向链表末尾时，删掉慢指针所指向的节点即可
     public ListNode removeNthFromEnd(ListNode head, int n) {
+        // 有可能要删除第一个节点，因此用虚拟头节点
         ListNode dummy = new ListNode(0, head);
         ListNode slow = dummy, fast = slow;
         /// 快指针先走 n 步

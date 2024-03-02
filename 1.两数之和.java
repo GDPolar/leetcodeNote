@@ -9,19 +9,16 @@ import java.util.HashMap;
 // @lc code=start
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        int[] res = {0, 0};
-        // key 是值，value 是序号
-        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        // key 是数值，val 是位置
+        HashMap<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            if (hashMap.containsKey(target - nums[i])) {
-                res[0] = i;
-                res[1] = hashMap.get(target - nums[i]);
-                return res;
+            if (map.containsKey(target - nums[i])) {
+                return new int[]{i, map.get(target - nums[i])};
             } else {
-                hashMap.put(nums[i], i);
+                map.put(nums[i], i);
             }
         }
-        return res;
+        return null;
     }
 }
 // @lc code=end

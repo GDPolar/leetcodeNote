@@ -28,23 +28,23 @@ class Solution {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode temp;
         // 创建虚拟头节点
         ListNode vHead = new ListNode(0, head);
-        // 每两两交换前 prev.next 始终指向待交换的前一个节点
-        ListNode prev = vHead;
-        // 到表尾或只剩一个节点，则结束
-        while(prev.next != null && prev.next.next != null) {
-            // 保存原第一个节点
-            temp = prev.next;
+        // 每两两交换前 prev 始终指向待交换的第一个节点的前一个节点
+        ListNode prev = vHead, curr = head, temp;
+        // 到表尾或只剩单个节点，则结束
+        while(curr != null && curr.next != null) {
+            // 保存原第二个节点的 next
+            temp = curr.next.next;
             // 原第二个节点移到 prev 的 next 处
-            prev.next = prev.next.next;
-            // 原第二个节点后面的尾巴交给原第一个节点
-            temp.next = prev.next.next;
+            prev.next = curr.next;
             // 原第一个节点接到原第二个节点（现第一个节点）后面
-            prev.next.next = temp;
-            // 更新 prev
-            prev = temp;
+            curr.next.next = curr;
+            // 原第二个节点后面的尾巴交给原第一个节点
+            curr.next = temp;
+            // 更新 prev 和 curr
+            prev = curr;
+            curr = temp;
         }
         return vHead.next;
     }

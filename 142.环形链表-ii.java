@@ -8,15 +8,6 @@ import java.util.Set;
  * [142] 环形链表 II
  */
 
- class ListNode {
-     int val;
-     ListNode next;
-     ListNode(int x) {
-         val = x;
-         next = null;
-     }
- }
-
 // @lc code=start
 /**
  * Definition for singly-linked list.
@@ -31,6 +22,8 @@ import java.util.Set;
  */
 class Solution {
     public ListNode detectCycle(ListNode head) {
+        // 记：从头结点出发一个指针，从相遇节点也出发一个指针，相遇点就是环形入口的节点
+
         /*
         Set<ListNode> set = new HashSet<ListNode>();
         while(head != null) {
@@ -52,25 +45,22 @@ class Solution {
         // =>  x = (n - 1) (y + z) + z
         // 当 n 为 1 的时候，公式就化为 x = z，即
         // 从头结点出发一个指针，从相遇节点也出发一个指针，这两个指针每次只走一个节点，那么当这两个指针相遇的时候就是环形入口的节点
-        ListNode fast = head, slow = head;
-        ListNode res;
-        while (true) {
-            if (fast == null || fast.next == null) {
-                // 没有交点
-                return null;
-            }
-            // 快指针一次走两步，慢指针一次走一步
+        ListNode slow = head, fast = head;
+        // 链表能走到头，说明没有环
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
             fast = fast.next.next;
-            slow = slow.next;
-            // 找到交点
-            if (fast == slow) break;
+            // 找到相遇点
+            if (slow == fast) {
+                ListNode meetPosition = slow, node = head;
+                while (node != meetPosition) {
+                    meetPosition = meetPosition.next;
+                    node = node.next;
+                }
+                return node;
+            }
         }
-        res = head;
-        while (slow != res) {
-            slow = slow.next;
-            res = res.next;
-        }
-        return res;
+        return null;
     }
 }
 // @lc code=end
