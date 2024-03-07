@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
@@ -90,29 +91,21 @@ class TreeNode {
  */
 class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
         // 根据先序遍历的思路，进行调整
         // 先序是中左右，后序是左右中
         // 则将先序调整为中右左，然后颠倒结果得到左右中
-        if (root == null) {
-            return res;
-        }
-        // 维护一个栈
-        stack.push(root);
-        TreeNode t;
-        while (!stack.isEmpty()) {
-            // 中出栈
-            t = stack.pop();    
-            res.add(t.val);
-            // 左入栈
-            if (t.left != null) {
-                stack.push(t.left);
+        List<Integer> res = new ArrayList<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                // 先中
+                res.add(root.val);
+                stack.push(root);
+                // 此处改为了 root.right，实现 中后面是右
+                root = root.right;
             }
-            // 右入栈
-            if (t.right != null) {
-                stack.push(t.right);
-            }
+            root = stack.pop();
+            root = root.left;
         }
         Collections.reverse(res);
         return res;

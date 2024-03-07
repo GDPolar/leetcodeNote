@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -88,27 +89,26 @@ import java.util.Queue;
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
         // 方法一：层序遍历，每层最后一个节点组合成答案
-        ArrayList<Integer> res = new ArrayList<>();
-        if (root == null) {
+        List<Integer> res = new ArrayList<>();
+        if (null == root) {
             return res;
         }
-        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
         while (!queue.isEmpty()) {
-            ArrayList<Integer> currentLevelRes = new ArrayList<>();
-            TreeNode temp;
             int currentLevelSize = queue.size();
+            TreeNode node = null;
             for (int i = 0; i < currentLevelSize; i++) {
-                temp = queue.poll();
-                currentLevelRes.add(temp.val);
-                if (temp.left != null) {
-                    queue.offer(temp.left);
+                node = queue.poll();
+                if (null != node.left) {
+                    queue.offer(node.left);
                 }
-                if (temp.right != null) {
-                    queue.offer(temp.right);
+                if (null != node.right) {
+                    queue.offer(node.right);
                 }
             }
-            res.add(currentLevelRes.get(currentLevelSize - 1));
+            res.add(node.val);
+
         }
         return res;
 

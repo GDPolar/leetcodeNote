@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -40,28 +41,22 @@ import java.util.List;
  */
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        Deque<TreeNode> stack = new LinkedList<>();
-        if (root == null) {
-            return res;
-        } 
-        TreeNode t;
-        while (root != null || !stack.isEmpty()) {
-            // 将当前节点入栈保存，然后向左下移动
-            if (root != null) {
+        List<Integer> res = new ArrayList<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
                 stack.push(root);
+                // 先左
                 root = root.left;
             }
-            // 到达最左下的节点的左孩子（即为 null）
-            else {
-                // 弹出父节点，即最左下的节点
-                t = stack.pop();
-                res.add(t.val);
-                // 转向右兄弟节点，即弹出的父节点的右孩子节点
-                root = t.right;
-            }
+            root = stack.pop();
+            // 再中
+            res.add(root.val);
+            // 最后右
+            root = root.right;
         }
         return res;
+
 
         /*
         ArrayList<Integer> res = new ArrayList<Integer>();

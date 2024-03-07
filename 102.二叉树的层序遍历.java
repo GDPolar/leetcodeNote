@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,31 +86,30 @@ class TreeNode {
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        ArrayList<List<Integer>> res = new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
             return res;
         }
-        Queue<TreeNode> queue = new LinkedList<>();
-        // queue.offer() 与 queue.add() 都是在队尾添加元素
-        // 前者若插入失败返回 false，后者抛出异常
+        Queue<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
         while (!queue.isEmpty()) {
-            ArrayList<Integer> currentLevelRes = new ArrayList<>();
-            TreeNode temp;
+            List<Integer> list = new ArrayList<>();
+            // 队列大小会在循环内变化，故在循环前获取
             int currentLevelSize = queue.size();
             for (int i = 0; i < currentLevelSize; i++) {
-                temp = queue.poll();
-                currentLevelRes.add(temp.val);
-                if (temp.left != null) {
-                    queue.offer(temp.left);
+                TreeNode node = queue.poll();
+                if (null != node.left) {
+                    queue.offer(node.left);
                 }
-                if (temp.right != null) {
-                    queue.offer(temp.right);
+                if (null != node.right) {
+                    queue.offer(node.right);
                 }
+                list.add(node.val);
             }
-            res.add(currentLevelRes);
+            res.add(list);
         }
         return res;
+
      }
 }
 // @lc code=end

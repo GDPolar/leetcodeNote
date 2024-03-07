@@ -1,5 +1,6 @@
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -57,34 +58,24 @@ import java.util.Queue;
 // @lc code=start
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        // ①：由优先队列实现一个容量为 k 的小顶堆
-        // 保存频率最大的 k 个元素，且堆顶是这 k 个里面频率最小的
-        // ②：由优先队列实现一个大顶堆，依次弹出 k 个元素作为答案
-        PriorityQueue<int[]> queue = new PriorityQueue<>(
-            (a, b) -> a[1] - b[1]
-        );
-
-        for (int num : nums){
-            map.put(num, map.getOrDefault(num, 0) + 1);
-        }
-
-        for (Map.Entry<Integer,Integer> entry : map.entrySet()) {
-            if (queue.size() < k){
-                queue.add(new int[]{entry.getKey(), entry.getValue()});
-            }
-            else {
-                // 若待加入的元素的频率比堆顶元素频率还小，跳过该元素
-                // 否则如下弹出堆顶最小元素，然后加入新元素
-                if(entry.getValue() > queue.peek()[1]) {
-                    queue.poll();
-                    queue.add(new int[]{entry.getKey(), entry.getValue()});
-                }
-            }
-        }
         int[] res = new int[k];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        // 优先队列，大顶堆
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            // 返回正数，则 o1 大
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return map.get(o2) - map.get(o1);
+            }
+        });
+        for (int num : nums) {
+            map.put(num, 1 + map.getOrDefault(num, 0));
+        }
+        for (Integer i : map.keySet()) {
+            pq.add(i);
+        }
         for (int i = 0; i < k; i++) {
-            res[i] = queue.poll()[0];
+            res[i] = pq.poll();
         }
         return res;
     }

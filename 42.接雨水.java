@@ -56,21 +56,21 @@ class Solution {
         // 方法一：
         // 按列 dp
         int ans = 0;
-        int[] lMaxHeight = new int[height.length];
-        int[] rMaxHeight = new int[height.length];
+        int[] leftMaxHeight = new int[height.length];
+        int[] rightMaxHeight = new int[height.length];
         // 找到所有列的左侧最高高度和右侧最高高度
-        lMaxHeight[0] = height[0];
+        leftMaxHeight[0] = height[0];
         for (int i = 1; i < height.length; i++) {
-            lMaxHeight[i] = Math.max(lMaxHeight[i - 1], height[i]);
+            leftMaxHeight[i] = Math.max(leftMaxHeight[i - 1], height[i - 1]);
         }
-        rMaxHeight[height.length - 1] = height[height.length - 1];
+        rightMaxHeight[height.length - 1] = height[height.length - 1];
         for (int i = height.length - 2; i >= 0; i--) {
-            rMaxHeight[i] = Math.max(rMaxHeight[i + 1], height[i]);
+            rightMaxHeight[i] = Math.max(rightMaxHeight[i + 1], height[i + 1]);
         }
         // 两侧不积水
         for (int i = 1; i < height.length - 1; i++) {
             // 当前列积水高度 = min（左边柱子的最高高度，右边柱子的最高高度）- 当前柱子高度
-            int min = Math.min(lMaxHeight[i], rMaxHeight[i]);
+            int min = Math.min(leftMaxHeight[i], rightMaxHeight[i]);
             if (min > height[i]) {
                 ans += min - height[i];
             }

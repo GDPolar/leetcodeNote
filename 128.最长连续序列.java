@@ -47,9 +47,33 @@
 // @lc code=start
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 class Solution {
     public int longestConsecutive(int[] nums) {
+        int res = 0;
+        HashSet<Integer> set = new HashSet<>();
+        // 去重
+        for (int i : nums) {
+            set.add(i);
+        }
+        for (Integer i : set) {
+            // 当前元素位于序列的起点时，计算序列长度
+            if (set.contains(i - 1)) {
+                continue;
+            } else {
+                int curNum = i + 1;
+                int curLength = 1;
+                while (set.contains(curNum++)) {
+                    curLength++;
+                }
+                res = Math.max(curLength, res);
+            }
+        }
+        return res;
+    }
+
+    public int longestConsecutive2(int[] nums) {
         // 哈希表的 val 表示以 key 作为左/右边界的序列长度
         HashMap<Integer, Integer> m = new HashMap<>();  
         int res = 0;  

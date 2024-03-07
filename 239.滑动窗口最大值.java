@@ -64,8 +64,35 @@ import java.util.Map.Entry;
 
 // @lc code=start
 class Solution {
-
+    // 正常做法：使用单调双端队列
+    Deque<Integer> deque = new LinkedList<>();
     public int[] maxSlidingWindow(int[] nums, int k) {
+        int[] res = new int[nums.length - k + 1];
+        for (int i = 0; i < k - 1; i++) {
+            addAfterChecked(nums, i);
+        }
+        for (int i = k - 1; i < nums.length; i++) {
+            addAfterChecked(nums, i);
+            // 队头元素为窗口的最大值
+            res[i - k + 1] = deque.peek();
+            // 此轮滑出的元素正好是原窗口内最大元素，将其删除
+            if (deque.peek() == nums[i - k + 1]) {
+                deque.remove();
+            }
+        }   
+        return res;
+    }
+    // 向队尾添加元素前先丢掉队列中所有小于它的元素
+    // 保证队列为单调递减
+    private void addAfterChecked(int[] nums, int index) {
+        while (!deque.isEmpty() && deque.getLast() < nums[index]) {
+            // 由队列单调递减，故从尾部遍历删除
+            deque.removeLast();
+        }
+        deque.add(nums[index]);
+    }
+}
+    /*
         int n = nums.length;
         int[] ans = new int[n - k + 1];
         int max = Integer.MIN_VALUE;
@@ -120,40 +147,9 @@ class Solution {
     }
 
 
-    
-    
-
-
-    // // 正常做法：使用单调双端队列
-    // Deque<Integer> deque = new LinkedList<>();
-    // public int[] maxSlidingWindow(int[] nums, int k) {
-    //     int[] res = new int[nums.length - k + 1];
-    //     for (int i = 0; i < k - 1; i++) {
-    //         addAfterChecked(nums, i);
-    //     }
-    //     for (int i = k - 1; i < nums.length; i++) {
-    //         addAfterChecked(nums, i);
-    //         // 队头元素为窗口的最大值
-    //         res[i - k + 1] = deque.peek();
-    //         // 单调队列满了才删除队头元素
-    //         if (deque.peek() == nums[i - k + 1]) {
-    //             deque.remove();
-    //         }
-    //     }   
-    //     return res;
-    // }
-    // // 向队尾添加元素前先丢掉队列中所有小于它的元素
-    // // 保证队列为单调递减
-    // private void addAfterChecked(int[] nums, int index) {
-    //     while (!deque.isEmpty() && deque.getLast() < nums[index]) {
-    //         // 由队列单调递减，故从尾部遍历删除
-    //         deque.removeLast();
-    //     }
-    //     deque.add(nums[index]);
-    // }
-
     // [-7,-8,7,5,7,1,6,0]\n4
     // [1,3,6,-1,2,-3,3,6,7]\n3
 }
+*/
 // @lc code=end
 

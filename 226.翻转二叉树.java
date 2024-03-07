@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -74,36 +75,27 @@ import java.util.LinkedList;
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-        // DFS 遍历
-        if (root == null) {
+        // 先序遍历
+        if (null == root) {
             return root;
         }
-        Deque<TreeNode> stack = new LinkedList<>();
-        stack.push(root);
-        TreeNode temp;
-        while (!stack.isEmpty()) {
-            temp = stack.peek();
-            if (temp != null) {
-                stack.pop();
-                
-                stack.push(temp);
-                stack.push(null);
-                if (temp.left != null) {
-                    stack.push(temp.left);
-                }
-                if (temp.right != null) {
-                    stack.push(temp.right);
-                }
+        TreeNode res = root;
+        Deque<TreeNode> stack = new ArrayDeque<>();
+
+        while (!stack.isEmpty() || null != root) {
+            while (null != root) {
+                stack.push(root);
+                root = root.left;
             }
-            else {
-                stack.pop();
-                TreeNode cur = stack.pop();
-                temp = cur.left;
-                cur.left = cur.right;
-                cur.right = temp;
-            }
+            root = stack.pop();
+            TreeNode temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+            // 此时，原来的 “右” 变成了 “左”，因此，将原先序遍历代码的 root = root.right 改写
+            root = root.left;
         }
-        return root;
+        
+        return res;
 
         /*
         // 递归，思路简单

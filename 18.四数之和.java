@@ -62,54 +62,55 @@ class Solution {
     // 类似第 15 题三数之和，就外面多套一层循环，复杂度为O(n^3)
     // 注意剪枝能减少大量时间，小心溢出
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> ans = new ArrayList<List<Integer>>();
-        if (null == nums || nums.length <= 3) {
-            return ans;
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        if (nums.length <= 3) {
+            return res;
         }
         Arrays.sort(nums);
-        // 防止溢出，转为 long 比较
+        // 防止四个 int 相加导致溢出，转为 long
         long sum;
         long ltarget = (long) target;
-        int nums_length = nums.length;
-        for (int i = 0; i < nums_length - 3; i++) {
+        int length = nums.length;
+        for (int i = 0; i < length - 3; i++) {
             // 去重
             if (i > 0 && nums[i - 1] == nums[i]) {
                 continue;
             }
             // 目前最小的 4 个元素之和大于 target，不会再有结果，直接结束
-            if ((long) nums[i]+ nums[i+1] + nums[i+2] + nums[i+3] > ltarget) {
+            if ((long) nums[i]+ nums[i + 1] + nums[i + 2] + nums[i + 3] > ltarget) {
                 break;
             }
-            // 目前固定的一个元素+最大的三个元素之和小于 target，本轮循环中不可能出结果，直接进入下一轮
-            if ((long) nums[i]+ nums[nums_length-1] + nums[nums_length-2] + nums[nums_length-3] < ltarget) {
+            // 目前固定的一个元素 + 最大的三个元素之和小于 target，本轮循环中不可能出结果，直接进入下一轮
+            if ((long) nums[i]+ nums[length - 1] + nums[length - 2] + nums[length - 3] < ltarget) {
                 continue;
             }
-            for (int j = i + 1; j < nums_length - 2; j++) {
+            for (int j = i + 1; j < length - 2; j++) {
                 // 去重
                 if (j > i + 1 && nums[j - 1] == nums[j]) {
                     continue;
                 } 
-                // 目前最小的 4 个元素之和大于t arget，不会再有结果，直接结束
-                if ((long) nums[i]+ nums[j] + nums[j+1] + nums[j+2] > ltarget) {
+                // 目前最小的 4 个元素之和大于 target，不会再有结果，直接结束
+                if ((long) nums[i]+ nums[j] + nums[j + 1] + nums[j + 2] > ltarget) {
                     break;
                 }
                 // 目前固定的两个元素 + 最大的两个个元素之和小于 target，本轮循环中不可能出结果，直接进入下一轮
-                if ((long) nums[i]+ nums[j] + nums[nums_length-1] + nums[nums_length-2] < ltarget) {
+                if ((long) nums[i]+ nums[j] + nums[length - 1] + nums[length - 2] < ltarget) {
                     continue;
                 }
                 // 第三层循环定义两指针 left = i + 1   、 right = length - 1 
                 // 若四者和大于 0 ，right 指针左移；若四者和小于 0，left 指针右移。
-                for (int left = j + 1, right = nums_length - 1; left < right; ) {
+                for (int left = j + 1, right = length - 1; left < right; ) {
                     sum = (long) nums[left] + nums[right] + nums[i] + nums[j];
                     if (sum == ltarget) {
-                        ans.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                        res.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
                         left++;
                         right--;
-                        // 注意此时移动指针
+
+                        // 去重
                         while(left < right && nums[left] == nums[left - 1]) {
-                            // 去重
                             left++;
                         }
+                        // 去重
                         while(left < right && nums[right] == nums[right + 1]) {
                             right--;
                         }
@@ -123,7 +124,7 @@ class Solution {
                 }
             }
         }
-        return ans;
+        return res;
     }
 }
 // @lc code=end

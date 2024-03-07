@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -103,26 +104,16 @@ import java.util.List;
  */
 class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
-        if (root == null) {
-            return res;
-        }
-        // 维护一个栈
-        stack.push(root);
-        TreeNode t;
-        while (!stack.isEmpty()) {
-            // 中出栈
-            t = stack.pop();    
-            res.add(t.val);
-            // 右入栈
-            if (t.right != null) {
-                stack.push(t.right);
+        List<Integer> res = new ArrayList<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                res.add(root.val);
+                stack.push(root);
+                root = root.left;
             }
-            // 左入栈
-            if (t.left != null) {
-                stack.push(t.left);
-            }
+            root = stack.pop();
+            root = root.right;
         }
         return res;
 
@@ -144,18 +135,18 @@ class Solution {
         return res;
         */
     }
-
-    /*
-    // 递归，思路简单
-    public void f(TreeNode root, ArrayList<Integer> res) {
-        if (root == null) {
-            return;
-        }
-        res.add(root.val);
-        f(root.left, res);
-        f(root.right, res);
-    }
-    */
 }
+
+/*
+// 递归，思路简单
+public void f(TreeNode root, ArrayList<Integer> res) {
+    if (root == null) {
+        return;
+    }
+    res.add(root.val);
+    f(root.left, res);
+    f(root.right, res);
+}
+*/
 // @lc code=end
 

@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -95,7 +96,7 @@ import java.util.LinkedList;
 // @lc code=start
 class Solution {
     public int evalRPN(String[] tokens) {
-        Deque<Integer> stack = new LinkedList<>();
+        Deque<Integer> stack = new ArrayDeque<>();
         for (String t : tokens) {
             if ("+".equals(t)) {
                 stack.push(stack.pop() + stack.pop());
