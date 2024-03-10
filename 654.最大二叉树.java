@@ -91,11 +91,12 @@ class Solution {
         }
         int rootIndex = getMaxIndex(nums, begin, end);
         TreeNode root = new TreeNode(nums[rootIndex]);
-        // 此处左闭右开
+        // 左闭右开
         root.left = constructWithBeginAndEnd(begin, rootIndex);
         root.right = constructWithBeginAndEnd(rootIndex + 1, end);
         return root;
     }
+
 
     public int getMaxIndex(int[] nums, int begin, int end) {
         int maxIndex = begin;

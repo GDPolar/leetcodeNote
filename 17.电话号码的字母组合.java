@@ -58,28 +58,28 @@ import java.util.List;
 
 // @lc code=start
 class Solution {
-    String[] dic = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    String[] dic = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
     List<String> res = new ArrayList<>();
     StringBuilder sb = new StringBuilder();
+
     public List<String> letterCombinations(String digits) {
         if (digits.length() == 0) {
             return res;
         }
-        backTracking(0, digits);
+        backTracking(digits, 0);
         return res;
     }
 
-    public void backTracking(int dicIndex, String digits) {
-        // 到达叶子节点
-        if (dicIndex == digits.length()) {
+    private void backTracking(String digits, int index) {
+        if (index == digits.length()) {
             res.add(sb.toString());
             return;
         }
-        // digits.charAt(dicIndex) - '0' 获取当前数字，-2 获取在字典中的位置
-        int currentIndexInDic = digits.charAt(dicIndex) - '0' - 2;
-        for (int i = 0; i < dic[currentIndexInDic].length(); i++) {
-            sb.append((dic[currentIndexInDic].charAt(i)));
-            backTracking(dicIndex + 1, digits);
+        int num = digits.charAt(index) - '0';
+        for (int i = 0; i < dic[num].length(); i++) {
+            sb.append(dic[num].charAt(i));
+            backTracking(digits, index + 1);
             sb.deleteCharAt(sb.length() - 1);
         }
     }

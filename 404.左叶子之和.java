@@ -65,19 +65,14 @@
  */
 class Solution {
     public int sumOfLeftLeaves(TreeNode root) {
-        return f(root, 0);
-    }
-
-    public int f(TreeNode root, int ans) {
         if (root == null) {
-            return ans;
+            return 0;
         }
-        // 检测到左节点是叶子节点
+        // 左孩子是叶子节点
         if (root.left != null && root.left.left == null && root.left.right == null) {
-            ans += root.left.val;
+            return root.left.val + sumOfLeftLeaves(root.right);
         }
-        ans = f(root.left, ans);
-        return f(root.right, ans);
+        return sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
     }
 }
 // @lc code=end

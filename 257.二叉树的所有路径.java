@@ -65,27 +65,41 @@ import java.util.List;
 class Solution {
     public List<String> binaryTreePaths(TreeNode root) {
         List<String> res = new ArrayList<>();
-        StringBuilder path = new StringBuilder("");
-        f(root, path, res);
+        if (root == null) {
+            return res;
+        }
+        List<Integer> paths = new ArrayList<>();
+        traversal(root, paths, res);
         return res;
     }
 
-    public void f(TreeNode root, StringBuilder path, List<String> res) {
-        if (root == null) {
+    private void traversal(TreeNode root, List<Integer> paths, List<String> res) {
+        paths.add(root.val);
+        // 遇到叶子结点
+        if (root.left == null && root.right == null) {
+            // 输出
+            res.add(pathToString(paths));
             return;
         }
-        path.append(root.val);
-        // 到达叶子节点，产生一个结果
-        if (root.left == null && root.right == null) {
-            res.add(path.toString());
+        // 递归和回溯是同时进行，所以要放在同一个花括号里
+        if (root.left != null) { 
+            traversal(root.left, paths, res);
+            paths.remove(paths.size() - 1);
         }
-        else {
-            path.append("->");
-            f(root.left, new StringBuilder(path), res);
-            f(root.right, new StringBuilder(path), res);
+        if (root.right != null) { 
+            traversal(root.right, paths, res);
+            paths.remove(paths.size() - 1);
         }
     }
 
+    private String pathToString(List<Integer> paths) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < paths.size() - 1; i++) {
+            sb.append(paths.get(i)).append("->");
+        }
+        sb.append(paths.get(paths.size() - 1));
+        return sb.toString();
+    }
 }
 // @lc code=end
 

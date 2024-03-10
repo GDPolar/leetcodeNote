@@ -78,7 +78,7 @@ class Solution {
 
     public void backTracking(int start, int k, int n) {
         // 剪枝
-        if ((start + k) * k / 2 > n) {
+        if ((start + start + k - 1) * k / 2 > n || (10 - k + 9) * k / 2 < n) {
             return;
         }
         if (k == 0) {

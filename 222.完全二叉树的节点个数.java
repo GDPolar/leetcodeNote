@@ -86,28 +86,30 @@ class Solution {
         if (root == null) {
             return 0;
         }
-        int depth = isPBT(root);
+        int depth = getPBTDepth(root);
         if (-1 != depth) {
             // 用位运算优化
-            // return (1 << depth) - 1;
-            return (int)Math.pow(2, depth) - 1;
+            return (1 << depth) - 1;
+            // return (int)Math.pow(2, depth) - 1;
         }
         return 1 + countNodes(root.left) + countNodes(root.right);
     }
 
     // 如果是 PBT，则返回深度，否则返回 -1
-    public int isPBT(TreeNode root) {
+    public int getPBTDepth(TreeNode root) {
         int depth = 1;
         TreeNode rightmost = root.right, leftmost = root.left;
+        // 不是 PBT 的 CBT，一定是右子树深度小于左子树深度
         while (rightmost != null) {
             rightmost = rightmost.right;
             leftmost = leftmost.left;
             depth++;
         }
-        if (leftmost == rightmost) {
+        if (leftmost == null) {
             return depth;
+        } else {
+            return -1;
         }
-        return -1;
     }
 }
 // @lc code=end

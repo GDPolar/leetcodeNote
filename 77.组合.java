@@ -55,7 +55,8 @@ import java.util.List;
 // @lc code=start
 class Solution {
     List<List<Integer>> res = new ArrayList<>();
-    List<Integer> r = new ArrayList<>();
+    List<Integer> list = new ArrayList<>();
+
     public List<List<Integer>> combine(int n, int k) {
         backTracking(n, k, 1);
         return res;
@@ -63,16 +64,16 @@ class Solution {
 
     public void backTracking(int n, int k, int startIndex) {
         if (k == 0) {
-            res.add(new ArrayList<>(r));
+            res.add(new ArrayList<>(list));
             return;
         }
         // i <= n - k + 1 剪枝操作
         for (int i = startIndex; i <= n - k + 1; i++) {
-            r.add(i);
+            list.add(i);
             backTracking(n, k - 1, i + 1);
             // 执行至此，意味着向 res 里添加了一个结果
             // 回溯，撤销处理的节点
-            r.remove(r.size() - 1);
+            list.remove(list.size() - 1);
         }
     }
 }

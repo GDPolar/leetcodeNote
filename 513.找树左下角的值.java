@@ -68,12 +68,12 @@ import java.util.Queue;
  * }
  */
 class Solution {
-    int resDep = 1;
-    int ans;
+    int maxDepth = Integer.MIN_VALUE;
+    int res;
+
     public int findBottomLeftValue(TreeNode root) {
-        ans = root.val;
-        f(root, 1);
-        return ans;
+        tranversal(root, 1);
+        return res;
         /* 
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
@@ -92,17 +92,17 @@ class Solution {
         */
     }
 
-    public void f(TreeNode root, int depth) {
+    public void tranversal(TreeNode root, int depth) {
         if (root == null) {
             return;
         }
-        if (root.left == null && root.right == null && depth > resDep) {
-            ans = root.val;
-            resDep = depth;
+        if (depth > maxDepth) {
+            res = root.val;
+            maxDepth = depth;
         }
         // 先左子树，再右子树，则获取到的是最左的节点
-        f(root.left, depth + 1);
-        f(root.right, depth + 1);
+        tranversal(root.left, depth + 1);
+        tranversal(root.right, depth + 1);
     }
 }
 // @lc code=end

@@ -49,6 +49,9 @@
  */
 
 // @lc code=start
+
+import java.util.HashMap;
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -66,29 +69,31 @@
  */
 class Solution {
     int[] inorder; int[] postorder;
+    HashMap<Integer, Integer> inorderIndex = new HashMap<>();
+    
     public TreeNode buildTree(int[] inorder, int[] postorder) {
         this.inorder = inorder;
         this.postorder = postorder;
-        return buildTreeWithBeginAndEnd(0, inorder.length - 1, 0, postorder.length - 1);
+        for (int i = 0; i < inorder.length; i++) {
+            inorderIndex.put(inorder[i], i);
+        }
+        return buildTreeWithBoundary(0, inorder.length - 1, 0, postorder.length - 1);
     }
 
-    public TreeNode buildTreeWithBeginAndEnd(int inBegin, int inEnd, int poBegin, int poEnd) {
+    public TreeNode buildTreeWithBoundary(int inBegin, int inEnd, int poBegin, int poEnd) {
         if (inBegin > inEnd || poBegin > poEnd) {
             return null;
         }
         // 后序的最后为根节点，中序的根节点左部分为根的左子树、右部分为根的右子树
-        int rootIndex;
-        for (rootIndex = inBegin; rootIndex <= inEnd; rootIndex++) {
-            if (inorder[rootIndex] == postorder[poEnd]) {
-                break;
-            }
-        }
+        int rootIndex = inorderIndex.get(postorder[poEnd]);
+
         int lengthOfLeft = rootIndex - inBegin;
         int lengthOfRight = inEnd - rootIndex;
         TreeNode root = new TreeNode(inorder[rootIndex]);
         // 注意切割时保持一致性，此处保持左闭右闭
-        root.left = buildTreeWithBeginAndEnd(inBegin, rootIndex - 1, poBegin, poBegin + lengthOfLeft - 1);
-        root.right = buildTreeWithBeginAndEnd(rootIndex + 1, inEnd, poEnd - lengthOfRight , poEnd - 1);
+        root.left = buildTreeWithBoundary(inBegin, rootIndex - 1, poBegin, poBegin + lengthOfLeft - 1);
+        root.right = buildTreeWithBoundary(rootIndex + 1, inEnd, poEnd - lengthOfRight , poEnd - 1);
+        
         return root;
     }
 

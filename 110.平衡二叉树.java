@@ -84,6 +84,7 @@ class Solution {
         }
         int leftHeight = getHeightIfIsBalanced(root.left);
         // 剪枝。若左子树不是平衡二叉树，则不用计算右子树
+        // 而是需要将 整棵树不是平衡二叉树 这一结论尽快传回根节点
         if (leftHeight == -1) {
             return -1;
         }
