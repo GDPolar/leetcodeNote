@@ -75,19 +75,17 @@ import java.util.ArrayList;
  * }
  */
 class Solution {
+
     ArrayList<Integer> res = new ArrayList<>();
     int prev;
     int maxFreq = 1;
     int freq = 0;
+
     public int[] findMode(TreeNode root) {
         prev = root.val;
         // 中序遍历二叉搜索树等于遍历有序数组
         inorder(root);
-        int ans[] = new int[res.size()];
-        for (int i = 0; i < ans.length; i++) {
-            ans[i] = res.get(i);
-        }
-        return ans;
+        return res.stream().mapToInt(Integer::intValue).toArray();
     }
 
     public void inorder(TreeNode root) {

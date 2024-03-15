@@ -117,22 +117,22 @@ class Solution {
             }
             // ② 左孩子节点有右子树，沿着右下找到最大节点
             else{
-                root.val = getLeftBiggest(root.left, root);
+                root.val = getLeftBiggest(root.left);
             }
         }
         return root;
     }
 
-    private int getLeftBiggest(TreeNode r, TreeNode father) {
-        while (r.right != null) {
-            father = r;
-            r = r.right;
+    private int getLeftBiggest(TreeNode root) {
+        // root 一定有右孩子
+        TreeNode pre = root, node = pre.right;
+        while (node.right != null) {
+            pre = node;
+            node = node.right;
         }
-        // 此时 r 指向的节点 T 即为原待删除节点 root 的左子树的最大节点
-        // T 节点一定无右子树
-        // 删除该节点 T（即用 T 的左孩子代替 T） 并将其 val 返回用于替换
-        father.right = r.left;
-        return r.val;
+        // 记得留下 node 左子树
+        pre.right = node.left;
+        return node.val;
     }
 }
 // @lc code=end

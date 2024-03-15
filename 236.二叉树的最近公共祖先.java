@@ -80,16 +80,16 @@ class Solution {
         }
         // 获得在左、右子树查找 p 或 q 的结果
         // 若不存在于子树，则会返回 null
-        TreeNode l = lowestCommonAncestor(root.left, p, q);
-        TreeNode r = lowestCommonAncestor(root.right, p, q);
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
         // p、q 位于左、右子树，则当前节点即为结果，一路传上去
-        if (l != null && r != null) {
+        if (left != null && right != null) {
             return root;
         }
-        if (l != null) {
-            return l;
+        if (left != null) {
+            return left;
         }
-        return r;    
+        return right;    
     }
 }
 // @lc code=end

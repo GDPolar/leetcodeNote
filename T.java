@@ -97,7 +97,20 @@ public class T {
         return head;
     }
 
-    private static int renumber(String s) {
+    // 找到指定数值的节点
+    public static TreeNode findTreeNode(TreeNode root, int target) {
+        if (root == null || root.val == target) {
+            return root;
+        }
+        TreeNode left = findTreeNode(root.left, target);
+        if (left != null) {
+            return left;
+        }
+        return findTreeNode(root.right, target);
+    }
+
+    // 字符串转 int
+    public static int renumber(String s) {
         char[] arr = s.toCharArray();
         int res = 0;
         for (int i = 0; i < arr.length; i++) {

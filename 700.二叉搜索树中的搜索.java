@@ -71,8 +71,9 @@ class Solution {
         }
         if (root.val < val) {
             return searchBST(root.right, val);
+        } else {
+            return searchBST(root.left, val);
         }
-        return searchBST(root.left, val);
     }
 }
 // @lc code=end

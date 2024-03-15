@@ -81,8 +81,7 @@ class Solution {
         if (root.val > val) {
             // 用孩子指针指向插入的节点或保持不变
             root.left = insertIntoBST(root.left, val);
-        }
-        else {
+        } else {
             root.right = insertIntoBST(root.right, val);
         }
         return root;
