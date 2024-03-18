@@ -68,31 +68,30 @@ class Solution {
     List<String> path = new ArrayList<>();
     // 类比组合问题，每次添加从 start 开始到当前选择的位置的子串，可用回溯
     public List<String> restoreIpAddresses(String s) {
-        StringBuilder str = new StringBuilder(s);
-        if (s.length() > 12) {
+        if (s.length() > 12 || s.length() < 4) {
             return res;
         }
-        backTracking(str, 4, 0);
+        backTracking(s,  0);
         return res;
     }
 
-    public void backTracking(StringBuilder str, int leftQuantity, int startIndex) {
-        if (leftQuantity == 0) {
-            // s 正好分出了四个字段
-            if (startIndex >= str.length()) {
+    public void backTracking(String s, int startIndex) {
+        if (path.size() == 4) {
+            // s 正好分出了四个字段，且字符串处理完毕
+            if (startIndex == s.length()) {
                 res.add(pathToRes(path));
             }
             return;
         }
 
-        for (int i = startIndex; i < str.length(); i++) {
-            String sub = str.substring(startIndex, i + 1);
+        for (int i = startIndex; i < s.length(); i++) {
+            String sub;
             // 剪枝。当前位置不合法，后续的位置也不合法，直接跳出
-            if (!isLegal(sub)) {
+            if (s.length() - i > 3 * (4 - path.size()) || !isLegal(sub = s.substring(startIndex, i + 1))) {
                 break;
             }
             path.add(sub);
-            backTracking(str, leftQuantity - 1, i + 1);
+            backTracking(s, i + 1);
             path.remove(path.size() - 1);
         }
     }

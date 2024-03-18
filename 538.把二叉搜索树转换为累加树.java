@@ -93,8 +93,10 @@ class Solution {
             return root;
         }
         convertBST(root.right);
+
         sum += root.val;
         root.val = sum;
+        
         convertBST(root.left);
         return root;
     }

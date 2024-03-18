@@ -59,21 +59,35 @@
 // @lc code=start
 class Solution {
     public int maxSubArray(int[] nums) {
-        // 以防出现 nums 全负数，ans 初始化为最小值
-        int ans = Integer.MIN_VALUE;
-        int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-            if (sum > ans) {
-                ans = sum;
+        // dp[i] 表示以第 i 个数为结尾的最大连续子数组
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int res = dp[0];
+        for (int i = 1; i < dp.length; i++) {
+            if (dp[i - 1] < 0) {
+                dp[i] = nums[i];
+            } else {
+                dp[i] = dp[i - 1] + nums[i];
             }
-            // 若此时窗口内的数的和 sum 为负数，那么立刻从下一个元素重新计算连续和
-            // 因为负数加上下一个元素，连续和只会越来越小。
-            if (sum < 0) {
-                sum = 0;
-            }
+            res = Math.max(res, dp[i]);
         }
-        return ans;
+        return res;
+
+        /*
+        int res = Integer.MIN_VALUE;
+        int currentSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (currentSum < 0) {
+                // 若此时窗口内的数的和 currentSum 为负数，那么立刻从下一个元素重新计算连续和
+                // 因为负数加上下一个元素，和一定不大于下一个元素。
+                currentSum = nums[i];
+            } else {
+                currentSum += nums[i];
+            }
+            res = Math.max(currentSum, res);
+        }
+        return res;
+        */
     }
 }
 // @lc code=end

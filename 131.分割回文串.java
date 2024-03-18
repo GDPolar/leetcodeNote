@@ -49,49 +49,45 @@ import java.util.List;
 
 // @lc code=start
 class Solution {
-    // acabbaca
     List<List<String>> res = new ArrayList<>();
-    List<String> path = new ArrayList<>();
+    List<String> list = new ArrayList<>();
+    char[] array;
+    int[][] dp;
     public List<List<String>> partition(String s) {
         // 类似 45.组合问题所用的回溯，只不过组合问题中 path 每次添加的为当前选择的单个元素
         // 而此处添加是从 start 开始到当前选择的位置的子串
-        backTracking(s, 0);
+        array = s.toCharArray();
+        dp = new int[array.length + 1][array.length + 1];
+        f(0);
         return res;
     }
-
-    public void backTracking(String s, int start) {
-        if (start >= s.length()) {
-            // 添加前的验证，保证了 path 中的字符串都是回文串
-            res.add(new ArrayList<>(path));
+    private void f(int begin) {
+        if (begin >= array.length) {
+            res.add(new ArrayList<>(list));
             return;
         }
-        String stemp;
-        for (int i = start; i < s.length(); i++) {
-            stemp = s.substring(start, i + 1);
-            // 若待加入的子串不是回文串，跳过当前位置
-            // 定义条件c：从 start 开始到当前选择的位置的子串是回文串
-            // 与组合问题不同，此处不可以跳过后面位置，因为即使当前位置不满足条件c，但后续位置仍有可能满足条件c
-            // 故不能 break
-            if (!isPalindrome(stemp)) {
-                continue;
+
+        for (int i = begin; i < array.length; i++) {
+            if (isPalindrome(begin, i) > 0) {
+                list.add(new String(array, begin, i - begin + 1));
+                f(i + 1);
+                list.remove(list.size() - 1);
             }
-            path.add(stemp);
-            backTracking(s, i + 1);
-            path.remove(path.size() - 1);
         }
     }
 
-    // 可使用 dp 数组优化
-    public boolean isPalindrome(String p) {
-        int start = 0, end = p.length() - 1;
-        while (start < end) {
-            if (p.charAt(start) != p.charAt(end)) {
-                return false;
-            }
-            start++;
-            end--;
+    private int isPalindrome(int begin, int end) {
+        if (dp[begin][end] != 0) {
+            return dp[begin][end];
         }
-        return true;
+        if (begin >= end) {
+            dp[begin][end] = 1;
+        } else if (array[begin] == array[end]) {
+            dp[begin][end] = isPalindrome(begin + 1, end - 1);
+        } else {
+            dp[begin][end] = -1;
+        }
+        return dp[begin][end];
     }
 }
 // @lc code=end

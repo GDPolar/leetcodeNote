@@ -76,28 +76,30 @@ class Solution {
         if (nums.length < 2) {
             return nums.length;
         }
-        int ans = 1;
-        Boolean direction = null;
+        int res = 1;
+        // flag > 0 表示升序，flag < 0 表示降序
+        int flag = 0;
         for (int i = 1; i < nums.length; i++) {
-            if (nums[i] == nums[i - 1]) {
+            if (nums[i] - nums[i - 1] == 0) {
                 continue;
-            }
-            // 刚开始或每次变向记一次数
-            if (nums[i] - nums[i - 1] > 0) {
-                if (direction != null && direction) {
+            } else if (nums[i] - nums[i - 1] > 0) {
+                if (flag > 0) {
+                    // 方向没变
                     continue;
                 }
-                ans++;
-                direction = true;
+                // 方向变化
+                flag = 1;
             } else {
-                if (direction != null && !direction) {
+                if (flag < 0) {
+                    // 方向没变
                     continue;
                 }
-                ans++;
-                direction = false;
+                // 方向变化
+                flag = -1;
             }
+            res++;
         }
-        return ans;
+        return res;
     }
 }
 // @lc code=end

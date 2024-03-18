@@ -71,13 +71,19 @@ class Solution {
         return ans;
         */
 
-        // dp[i][0] 表示在第 i 天时已持有股票（第 i 天前已持有或第 i 天买入）的当前现金
-        // dp[i][1] 表示在第 i 天时未持有股票（第 i 天前未持有或第 i 天卖出）的当前现金
+        // dp[i][0] 表示在第 i 天结束时仍持有股票的最大利润
+        // dp[i][1] 表示在第 i 天结束时未持有股票的最大利润
         int[][] dp = new int[prices.length][2];
         dp[0][0] = -prices[0];
         dp[0][1] = 0;
         for (int i = 1; i < dp.length; i++) {
+            // 第 i - 1 天结束前已持有且第 i 天未操作
+            // 或
+            // 第 i - 1 天结束前未持有且在第 i 天买入
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+            // 第 i - 1 天结束前未持有且第 i 天未操作
+            // 或
+            // 第 i - 1 天结束前持有且在第 i 天卖出
             dp[i][1] = Math.max(dp[i - 1][0] + prices[i], dp[i - 1][1]);
         }
 

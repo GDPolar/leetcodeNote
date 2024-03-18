@@ -63,10 +63,8 @@ import java.util.List;
 class Solution {
     List<List<Integer>> res = new ArrayList<>();
     List<Integer> path = new ArrayList<>();
-    int[] used;
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
-        used = new int[candidates.length];
         backTracking(candidates, target, 0);
         return res;
     }
@@ -78,16 +76,15 @@ class Solution {
             return;
         }
         for (int i = startIndex; i < candidates.length; i++) {
+            // 剪枝。当前位置及之后位置的数都不满足条件
+            if (candidates[i] > target) {
+                break;
+            }
             // ★ 去重。i > startIndex 保证纵向允许重复，横向不允许重复
             if (i > startIndex && candidates[i] == candidates[i - 1]) {
                 continue;
             }
             path.add(candidates[i]);
-            // 剪枝。当前位置及之后位置的数都不满足条件
-            if (target - candidates[i] < 0) {
-                path.remove(path.size() - 1);
-                break;
-            }
             backTracking(candidates, target - candidates[i], i + 1);
             path.remove(path.size() - 1);
         }
