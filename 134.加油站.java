@@ -71,17 +71,15 @@ class Solution {
         for (int i = 0; i < cost.length; i++) {
             curStore += gas[i] - cost[i];
             finStore += gas[i] - cost[i];
-            // curStore < 0 表示从 i 前的任一位置出发，到 i 处时都会失败
-            // 此时 cost[i] 大于 gas[i] 与之前用剩下的油量之和
+            // 位于位置 i 时，允许继续的条件是 gas[i] - cost[i] > 当前油量（初始为0）
+            // curStore < 0 表示从 i 及 i 之前的任一位置出发，都会失败
             if (curStore < 0) {
                 answer = i + 1;
                 curStore = 0;
             }
         }
-        if (finStore < 0) {
-            return -1;
-        }
-        return answer;
+        // gas 总和小于 cost 总和，那么无论从哪里出发，一定失败
+        return finStore < 0 ? -1 : answer;
 
         /* 
         int ans = 0;
@@ -104,6 +102,25 @@ class Solution {
             return -1;
         }
         return ans;
+        */
+
+
+        /* 暴力法 
+        int length = gas.length;
+        for (int i = 0; i < length; i++) {
+            int r = 0;
+            for (int j = 0; j < length; j++) {
+                r += gas[(i + j) % length];
+                r -= cost[(i + j) % length];
+                if (r < 0) {
+                    break;
+                }
+            }
+            if (r >= 0) {
+                return i;
+            }
+        }
+        return -1;
         */
     }
 }

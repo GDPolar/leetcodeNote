@@ -63,56 +63,53 @@ import java.util.Arrays;
 
 
 // @lc code=start
+
 class Solution {
-    
     public void solveSudoku(char[][] board) {
-        backTracking(board);
+        f(0, board);
     }
 
-    public boolean backTracking(char[][] board) {
-        // 每次都从 (0, 0) 开始找到下一个空的位置
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (board[i][j] == '.') {
-                    // 从 1 ~ 9 依次尝试
-                    for (int k = 1; k <= 9; k++) {
-                        if (check(board, i, j, k)){
-                            board[i][j] = (char)(k + '0');
-                            if (backTracking(board)) {
-                                return true;
-                            }
-                            board[i][j] = '.';
-                        }
+    private boolean f(int index, char[][] board) {
+        if (index == 81) {
+            return true;
+        }
+        int x = index / 9;
+        int y = index % 9;
+        if (board[x][y] == '.') {
+            for (int i = 1; i <= 9; i++) {
+                if (check(i, board, x, y)) {
+                    board[x][y] = (char) ('0' + i);
+                    if (f(index + 1, board)) {
+                        return true;
                     }
-                    // 1 ~ 9 都不可以填入当前位置，则之前某个位置填入的数字错误
-                    // 回溯撤销
-                    return false;
+                    board[x][y] = '.';
                 }
             }
+            // 当前位置所有数字都不行
+            return false;
         }
-        return true;
-    }   
+        return f(index + 1, board);
+    }
 
-    public boolean check(char[][] board, int x, int y, int v) {
-        char val = (char)(v + '0');
+    private boolean check(int ni, char[][] board, int x, int y) {
+        char num = (char) (ni + '0');
         // 同一行
         for (int i = 0; i < 9; i++) {
-            if (board[x][i] == val) {
+            if (board[x][i] == num) {
                 return false;
             }
         }
         // 同一列
         for (int i = 0; i < 9; i++) {
-            if (board[i][y] == val) {
+            if (board[i][y] == num) {
                 return false;
             }
         }
-        // 同一九宫格
-        int leftupx = x / 3 * 3;
-        int leftupy = y / 3 * 3;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i + leftupx][j + leftupy] == val) {
+        // 同一宫
+        int xBegin = x / 3 * 3, yBegin = y / 3 * 3;
+        for (int i = xBegin; i < xBegin + 3; i++) {
+            for (int j = yBegin; j < yBegin + 3; j++) {
+                if (board[i][j] == num) {
                     return false;
                 }
             }

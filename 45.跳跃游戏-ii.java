@@ -61,27 +61,21 @@ class Solution {
         int ans = 0;
         int currCoverDis = 0;
         int nextCoverDis = 0;
-        for (int i = 0; i < nums.length; i++) {
-            // 已经可以覆盖终点
-            if (currCoverDis >= nums.length - 1) {
+        for (int i = 0; i <= currCoverDis; i++) {
+            // 到达终点
+            if (i == nums.length - 1) {
                 return ans;
             }
-            // 更新当前覆盖范围
-            if (i > currCoverDis) {
+            // 更新下一步覆盖范围
+            nextCoverDis = Math.max(nextCoverDis, nums[i] + i);
+            // 到达当前覆盖范围边界，且未到达终点
+            if (i == currCoverDis) {
                 currCoverDis = nextCoverDis;
                 ans++;
-            }
-            // 更新下一步覆盖范围
-            if (nums[i] + i > nextCoverDis) {
-                nextCoverDis = nums[i] + i;
             }
         }
         return ans;
     }
-
-    // [5,6,4,4,6,9,4,4,7,4,4,8,2,6,8,1,5,9,6,5,2,7,9,7,9,6,9,4,1,6,8,8,4,4,2,0,3,8,5]
-    // [8,2,4,4,4,9,5,2,5,8,8,0,8,6,9,1,1,6,3,5,1,2,6,6,0,4,8,6,0,3,2,8,7,6,5,1,7,0,3,4,8,3,5,9,0,4,0,1,0,5,9,2,0,7,0,2,1,0,8,2,5,1,2,3,9,7,4,7,0,0,1,8,5,6,7,5,1,9,9,3,5,0,7,5]
-
 }
 // @lc code=end
 

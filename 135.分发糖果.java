@@ -59,6 +59,31 @@ import java.util.Arrays;
 // @lc code=start
 class Solution {
     public int candy(int[] ratings) {
+        if (ratings.length < 2) {
+            return 1;
+        }
+        int[] record = new int[ratings.length];
+        record[0] = 1;
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                record[i] = record[i - 1] + 1;
+            } else {
+                record[i] = 1;
+            }
+        }
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                // 既保持对左边糖果多，也比右边糖果多
+                record[i] = Math.max(record[i], record[i + 1] + 1);
+            }
+        }
+        int res = 0;
+        for (int i : record) {
+            res += i;
+        }
+        return res;
+
+        /*
         if (ratings.length == 1) {
             return 1;
         }
@@ -88,6 +113,7 @@ class Solution {
             prevRight = currRight;
         }
         return anser;
+        */
     }
 }
 // @lc code=end

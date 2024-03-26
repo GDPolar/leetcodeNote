@@ -56,7 +56,7 @@ class Solution {
     int[] set;
     public List<List<Integer>> permuteUnique(int[] nums) {
         set = new int[nums.length];
-        // 排序，方便通过横向相邻的节点来判断重复
+        // 排序，方便树层上通过横向相邻的节点来判断重复
         Arrays.sort(nums);
         backTracking(nums);
         return res;
@@ -72,14 +72,14 @@ class Solution {
             if (i > 0 && set[i - 1] == 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
-            if (set[i] == 1) {
-                continue;
+            // 纵向添加的条件是不重复，即 set[i] != 0
+            if (set[i] == 0) {
+                path.add(nums[i]);
+                set[i] = 1;
+                backTracking(nums);
+                set[i] = 0;
+                path.remove(path.size() - 1);
             }
-            path.add(nums[i]);
-            set[i] = 1;
-            backTracking(nums);
-            path.remove(path.size() - 1);
-            set[i] = 0;
         }
     }
 }

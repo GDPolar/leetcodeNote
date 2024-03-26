@@ -71,6 +71,35 @@ class Solution {
             }
         }
         return dp[m][n];
+
+
+        /* 
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[][] dp = new int[m][n];
+        for (int k = 0; k < n; k++) {
+            if (obstacleGrid[0][k] == 1) {
+                break;
+            }
+            dp[0][k] = 1;
+        }
+        for (int k = 0; k < m; k++) {
+            if (obstacleGrid[k][0] == 1) {
+                break;
+            }
+            dp[k][0] = 1;
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
+        */
     }
 }
 // @lc code=end

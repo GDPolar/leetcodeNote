@@ -70,14 +70,13 @@ class Solution {
             return;
         }
         for (int i = 0; i < nums.length; i++) {
-            if (set[i] == 1) {
-                continue;
+            if (set[i] != 1) {
+                path.add(nums[i]);
+                set[i] = 1;
+                backTracking(nums);
+                path.remove(path.size() - 1);
+                set[i] = 0;
             }
-            path.add(nums[i]);
-            set[i] = 1;
-            backTracking(nums);
-            path.remove(path.size() - 1);
-            set[i] = 0;
         }
     }
 }

@@ -56,34 +56,63 @@ import java.util.List;
 class Solution {
     public List<Integer> partitionLabels(String s) {
         List<Integer> res = new ArrayList<>();
-        if (s.length() == 1) {
-            res.add(1);
-        } else {
-            int[] lastPos = new int[26];
-            Arrays.fill(lastPos, -1);
-            // 获取每种字母最后出现的位置
-            for (int i = 0; i < s.length(); i++) {
-                int c = s.charAt(i) - 'a';
-                lastPos[c] = i; 
+        int[] lastPos = new int[26];
+        Arrays.fill(lastPos, -1);
+        // 获取每种字母最后出现的位置
+        for (int i = 0; i < s.length(); i++) {
+            int c = s.charAt(i) - 'a';
+            lastPos[c] = i; 
+        }
+        int left = 0, right = lastPos[s.charAt(0) - 'a'];
+        for (int i = 0; i < s.length(); ++i) {
+            // 找到一个分割点
+            if (i > right) {
+                res.add(right - left + 1);
+                left = i;
+                right = lastPos[s.charAt(i) - 'a'];
+                continue;
             }
-            for (int i = 0; i < s.length(); i++) {
-                int c = s.charAt(i) - 'a';
-                int cover = lastPos[c];
-                int j;
-                // 找到当前字符的覆盖范围
-                for (j = i; j < cover; j++) {
-                    int ci = s.charAt(j) - 'a';
-                    if (lastPos[ci] > cover) {
-                        // 更新覆盖范围
-                        cover = lastPos[ci];
-                    }
-                }
-                res.add(j - i + 1);
-                // 设置下一子串的起点
-                i = cover;
+            if (lastPos[s.charAt(i) - 'a'] > right) {
+                right = lastPos[s.charAt(i) - 'a'];
             }
         }
+        res.add(right - left + 1);
         return res;
+
+        /*
+        // flag[i][0] 记录字母第一次出现的位置
+        // flag[i][1] 记录字母最后一次出现的位置
+        int[][] flag = new int[26][2];
+        for (int i = 0; i < 26; ++i) {
+            flag[i][0] = 666;
+        }
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < s.length(); ++i) {
+            if (flag[s.charAt(i) - 'a'][0] == 666) {
+                flag[s.charAt(i) - 'a'][0] = i;
+            } 
+            flag[s.charAt(i) - 'a'][1] = i;
+        }
+        // 变成求重叠子区间组的个数
+        Arrays.sort(flag, (a, b) -> {
+            return Integer.compare(a[0], b[0]);
+        });
+        int left = 0, right = flag[0][1];
+        for (int i = 1; i < flag.length; ++i) {
+            if (flag[i][0] == 666) {
+                break;
+            }
+            if (flag[i][0] > right) {
+                res.add(right - left + 1);
+                left = flag[i][0];
+                right = flag[i][1];
+            } else if (flag[i][1] > right) {
+                right = flag[i][1];
+            } 
+        }
+        res.add(right - left + 1);
+        return res;
+        */
     }
 }
 // @lc code=end

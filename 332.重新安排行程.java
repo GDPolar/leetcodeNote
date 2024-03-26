@@ -1,7 +1,8 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /*
  * @lc app=leetcode.cn id=332 lang=java
@@ -65,6 +66,52 @@ import java.util.List;
 
 // @lc code=start
 class Solution {
+
+    private ArrayList<String> res;
+    private Map<String, Map<String, Integer>> map;
+
+    private boolean backTracking(int ticketNum){
+        if(res.size() == ticketNum + 1){
+            return true;
+        }
+        String last = res.get(res.size() - 1);
+        // map 不包含 last，表示无法找到下一程，此方案错误
+        if(map.containsKey(last)){
+            for(Map.Entry<String, Integer> target : map.get(last).entrySet()){
+                int count = target.getValue();
+                if(count > 0){
+                    res.add(target.getKey());
+                    target.setValue(--count);
+                    if(backTracking(ticketNum)) return true;
+                    res.remove(res.size() - 1);
+                    target.setValue(++count);
+                }
+            }
+        }
+        return false;
+    }
+
+    public List<String> findItinerary(List<List<String>> tickets) {
+        map = new HashMap<String, Map<String, Integer>>();
+        res = new ArrayList<>();
+        for(List<String> t : tickets){
+            Map<String, Integer> temp;
+            if(map.containsKey(t.get(0))){
+                // 相同起点和终点的票
+                temp = map.get(t.get(0));
+                temp.put(t.get(1), temp.getOrDefault(t.get(1), 0) + 1);
+            }else{
+                temp = new TreeMap<>();//升序Map
+                temp.put(t.get(1), 1);
+            }
+            map.put(t.get(0), temp);
+        }
+        res.add("JFK");
+        backTracking(tickets.size());
+        return res;
+    }
+
+    /*
     List<String> res = new ArrayList<>();
     List<String> path = new ArrayList<>();
     int[] set;
@@ -88,6 +135,11 @@ class Solution {
             return true;
         }
         for (int i = 0; i < tickets.size(); i++) {
+            if (i > 0 && tickets.get(i).get(0).equals(tickets.get(i - 1).get(0)) && tickets.get(i).get(1).equals(tickets.get(i - 1).get(01))) {
+                // 同样的票
+                continue;
+            }
+ 
             if (set[i] != 1 && tickets.get(i).get(0).equals(currPosition)) {
                 currPosition = tickets.get(i).get(1);
                 path.add(currPosition);
@@ -104,6 +156,7 @@ class Solution {
         }
         return false;
     }
+    */
 
 }
 // @lc code=end

@@ -1,9 +1,5 @@
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Queue;
-
-import javax.sound.sampled.Port;
-
 /*
  * @lc app=leetcode.cn id=406 lang=java
  *
@@ -79,8 +75,8 @@ class Solution {
         LinkedList<int[]> queue = new LinkedList<>();
         // 依次插入，若待插入位置已有元素，则将整体向后移动
         // 由于此前的排序，新插入的元素的 h 小于原来该位置元素的 h
-        for (int i = 0; i < people.length; i++) {
-            queue.add(people[i][1], people[i]);
+        for (int[] i : people) {
+            queue.add(i[1], i);
         }
         return queue.toArray(new int[people.length][2]);
     }    
