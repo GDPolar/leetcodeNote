@@ -53,19 +53,15 @@
 // @lc code=start
 class Solution {
     public int monotoneIncreasingDigits(int n) {
-        if (n < 100) {
-            if (n % 10 >= n / 10) {
-                return n;
-            }
-            return (n / 10 - 1) * 10 + 9;
+        if (n < 10) {
+            return n;
         }
-        String s = Integer.toString(n);
-        char[] cs = s.toCharArray();
+        char[] cs = Integer.toString(n).toCharArray();
         // 从前往后遍历时，某次操作可能会影响上次操作的结果
-        // eg: 332 -> 299
+        // eg: 668841 -> 667999
         // 故从后往前遍历
-        int flag = s.length();
-        for (int i = s.length() - 1; i > 0; i--) {
+        int flag = Integer.MAX_VALUE;
+        for (int i = cs.length - 1; i > 0; i--) {
             // 找到最左的不符合但增的位置
             if (cs[i] < cs[i - 1]) {
                 cs[i - 1]--;
@@ -75,7 +71,7 @@ class Solution {
         for (int i = flag; i < cs.length; i++) {
             cs[i] = '9';
         }
-        return Integer.valueOf(new String(cs));
+        return Integer.parseInt(new String(cs));
     }
 }
 // @lc code=end
