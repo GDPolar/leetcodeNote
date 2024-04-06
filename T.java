@@ -1,17 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.util.*;
 
 class TreeNode {
     int val;
@@ -107,6 +94,21 @@ public class T {
             return left;
         }
         return findTreeNode(root.right, target);
+    }
+
+    // 字符串转链表（无虚拟头节点）
+    public static ListNode toList(String s) {
+        String[] ss = s.split(",");
+        ListNode head =new ListNode(Integer.parseInt(ss[0]));;
+        if (ss.length > 1) {
+            ListNode prev = head, curr;
+            for (int i = 1; i < ss.length; i++) {
+                curr = new ListNode(Integer.parseInt(ss[i]));
+                prev.next = curr;
+                prev = curr;
+            }
+        }
+        return head;
     }
 
     // 字符串转 int
