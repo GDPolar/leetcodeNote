@@ -52,6 +52,34 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 class Solution {
+
+    // 双指针
+    public int trap1(int[] height) {
+        int maxLeft = height[0], maxRight = height[height.length - 1];
+        int left = 1, right = height.length - 2;
+        // 两边向中间靠拢
+        int res = 0;
+        for (int i = 1; i < height.length - 1; i++) {
+            if (height[left - 1] < height[right + 1]) {
+                // 如果 [left, right] 存在某个值大于 height[right + 1]
+                // 那么这个值也一定大于 height[left - 1]，不会影响当前 left 元素能接的雨水
+                // 否则不会更新 maxRight
+                maxLeft = Math.max(maxLeft, height[left - 1]);
+                if (maxLeft > height[left]) {
+                    res += maxLeft - height[left];
+                }
+                left++;
+            } else {
+                maxRight = Math.max(maxRight, height[right + 1]);
+                if (maxRight > height[right]) {
+                    res += maxRight - height[right];
+                }
+                right--;
+            }
+        }
+        return res;
+    }
+
     public int trap(int[] height) {
         // 方法一：
         // 按列 dp

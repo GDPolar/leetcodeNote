@@ -85,7 +85,8 @@ class Solution {
 
         // 方法二：修改状态定义，复杂度 nlogn
         // 已经得到的上升子序列的结尾的数越小，那么遍历的时候后面接上一个数，会有更大的可能构成一个长度更长的上升子序列
-        // tail[i] 表示长度为 i + 1 的所有上升子序列的结尾的最小值，eg：[10, 9, 2, 5, 3, 7] 中，tail[0] = 2, tail[1] = 3, tail[2] = 7
+        // tail[i] 表示长度为 i + 1 的所有上升子序列的结尾的最小值
+        // eg：[10, 9, 2, 5, 3, 7] 中，tail[0] = 2, tail[1] = 3, tail[2] = 7
         // 可证明数组 tail 也严格上升
         // 状态转移规则：
         // 若新数 num 大于 tail 的最后一个元素，则放在最后，否则
@@ -108,7 +109,7 @@ class Solution {
                 int right = end;
                 // [左闭右开)
                 while (left < right) {
-                    int mid = left + ((right - left) >>> 1);
+                    int mid = left + ((right - left) / 2);
                     if (tail[mid] < nums[i]) {
                         left = mid + 1;
                     } else {

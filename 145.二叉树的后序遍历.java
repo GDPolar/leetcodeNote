@@ -91,23 +91,26 @@ class TreeNode {
  */
 class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
-        // 根据先序遍历的思路，进行调整
-        // 先序是中左右，后序是左右中
-        // 则将先序调整为中右左，然后颠倒结果得到左右中
         List<Integer> res = new ArrayList<>();
         Deque<TreeNode> stack = new ArrayDeque<>();
+        TreeNode prev = null;
         while (!stack.isEmpty() || root != null) {
             while (root != null) {
-                // 先中
-                res.add(root.val);
                 stack.push(root);
-                // 此处改为了 root.right，实现 中后面是右
-                root = root.right;
+                root = root.left;
             }
             root = stack.pop();
-            root = root.left;
+            // prev 标记右孩子已经被访问过，防止重复访问
+            if (root.right != null && root.right != prev) {
+                stack.push(root);
+                root = root.right;
+            } else {
+                res.add(root.val);
+                prev = root;
+                // 该节点的左右孩子都访问了，若不将 root 标记为 null，下一次循环又会访问左孩子
+                root = null;
+            }
         }
-        Collections.reverse(res);
         return res;
     }
 
