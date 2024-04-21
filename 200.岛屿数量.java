@@ -87,6 +87,75 @@ class Solution {
             }
         }
     }
+
+
+    // 方法二：并查集
+    int[] parent;
+    int cs;
+    public int numIslands2(char[][] grid) {
+        parent = new int[grid.length * grid[0].length];
+        cs = grid[0].length;
+        for (int i = 0; i < parent.length; i++) {
+            if (grid[i / cs][i % cs] == '1') {
+                parent[i] = i;
+            } else {
+                parent[i] = -1;
+            }
+        }
+        //合并第一行
+        for (int j = 1; j < grid[0].length; j++) {
+            if (grid[0][j - 1] == '1' && grid[0][j] == '1') {
+                union(j - 1, j);
+            }
+        }
+        //合并第一列
+        for (int i = 1; i < grid.length; i++) {
+            if (grid[i - 1][0] == '1' && grid[i][0] == '1') {
+                union(cs * (i - 1), cs * i);
+            }
+        }
+
+
+        for (int i = 1; i < grid.length; i++) {
+            for (int j = 1; j < grid[0].length; j++) {
+                // 合并上一行
+                if (grid[i][j] == '1' && grid[i][j-1] == '1') {
+                    union(f(i, j), f(i, j - 1));
+                } 
+                // 合并上一列
+                if (grid[i][j] == '1' && grid[i-1][j] == '1') {
+                    union(f(i, j), f(i - 1, j));
+                } 
+            }
+        }
+        int res = 0;
+        int[] set = new int[parent.length];
+        for (int i = 0; i < parent.length; i++) {
+            if (parent[i] != -1) {
+                int p = find(i);
+                if (set[p] == 0) {
+                    res++;
+                    set[p] = 1;
+                }
+            }
+        }
+        return res;
+    }
+
+    public int f(int i, int j) {
+        return i * cs + j;
+    }
+
+    public int find(int x) {
+        if (x != parent[x]) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    public void union(int x, int y) {
+        parent[find(x)] = find(y);
+    }
 }
 // @lc code=end
 

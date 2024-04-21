@@ -21,19 +21,15 @@ import java.util.List;
 class Solution {
     // 简化代码
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode head = null, p = null;
+        ListNode vhead = new ListNode(), p = vhead;
         int carry = 0;
         while (l1 != null || l2 != null) {
             int n1 = l1 != null ? l1.val : 0;
             int n2 = l2 != null ? l2.val : 0;
             int sum = n1 + n2 + carry;
-            if (head == null) {
-                head = p = new ListNode(sum % 10);
-            } else {
-                p.next = new ListNode(sum % 10);
-                p = p.next;
-            }
             carry = sum / 10;
+            p.next = new ListNode(sum % 10);
+            p = p.next;
             if (l1 != null) {
                 l1 = l1.next;
             }
@@ -44,7 +40,7 @@ class Solution {
         if (carry > 0) {
             p.next = new ListNode(carry);
         }
-        return head;
+        return vhead.next;
     }
 }
 // @lc code=end
