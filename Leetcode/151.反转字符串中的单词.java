@@ -129,6 +129,54 @@ class Solution {
             arr[i] = temp;
         }
     }
+
+    public String reverseWords2(String s) {
+        s = reverse(trim(s));
+        // t 记录本次待翻转的字串的起始位置（含）
+        int t = 0;
+        // flag 表示是否刚进行过反转
+        int flag = 0;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ' ') {
+                if (flag == 0) {
+                    sb.append(reverse(s.substring(t, i))).append(' ');
+                    flag = 1;
+                } 
+                t = i + 1;
+            } else {
+                flag = 0;
+            }
+        }
+        sb.append(reverse(s.substring(t, s.length())));
+        return sb.toString();
+    }
+
+    public String reverse(String s) {
+        int len = s.length();
+        if (len < 2) {
+            return s;
+        }
+        char[] cs = s.toCharArray();
+        for (int i = 0; i < len / 2; i++) {
+            char c = cs[i];
+            cs[i] = cs[len - i - 1];
+            cs[len - i - 1] = c;
+        }
+        return new String(cs);
+    }
+
+    public String trim(String s) {
+        int i = 0;
+        while (i < s.length() && s.charAt(i) == ' ') {
+            i++;
+        }
+        int j = s.length() - 1;
+        while (j >= 0 && s.charAt(j) == ' ') {
+            j--;
+        }
+        return s.substring(i, j + 1);
+    }
 }
 // @lc code=end
 
