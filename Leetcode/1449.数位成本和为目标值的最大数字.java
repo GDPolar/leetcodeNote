@@ -1,3 +1,5 @@
+package Leetcode;
+
 /*
  * @lc app=leetcode.cn id=1449 lang=java
  *
@@ -86,7 +88,7 @@ class Solution {
     public String largestNumber(int[] cost, int target) {
         // 转化为完全背包问题：
         // 9 个物品，背包容量为 target，体积为 cost，价值为 1-9
-
+        return null;
     }
 }
 // @lc code=end

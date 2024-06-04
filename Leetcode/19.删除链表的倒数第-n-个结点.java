@@ -1,16 +1,11 @@
+package Leetcode;
+
+
 /*
  * @lc app=leetcode.cn id=19 lang=java
  *
  * [19] 删除链表的倒数第 N 个结点
  */
-
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode() {}
-    ListNode(int val) { this.val = val; }
-    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-}
 
 // @lc code=start
 /**
