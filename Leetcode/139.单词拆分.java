@@ -67,7 +67,7 @@ import java.util.List;
 class Solution {
 
     public boolean wordBreak(String s, List<String> wordDict) {
-        // f[i] 表示从 [0, i] 区间的子串是否已经判断过
+        // f[i] 表示从 [i, length - 1] 区间的子串是否已经判断过
         boolean[] f = new boolean[s.length()];
         return dfs(s, wordDict, 0, f);
     }
@@ -96,40 +96,30 @@ class Solution {
     }
 
 
-    // HashSet<String> set;
-    // int[][] dp;
-    // String str;
-    // public boolean wordBreak1(String s, List<String> wordDict) {
-    //     set = new HashSet<>();
-    //     for (int i = 0; i < wordDict.size(); i++) {
-    //         set.add(wordDict.get(i));
-    //     }
-    //     dp = new int[s.length()][s.length() + 1];
-    //     str = s;
-    //     return f(0, s.length());
-    // }
+        
+    public boolean wordBreak1(String s, List<String> wordDict) {
+        HashSet<String> set = new HashSet<>(wordDict.size());
+        // set 中查找能节省大量时间
+        for (String word : wordDict) {
+            set.add(word);
+        }
+        // dp[i] == true 表示 [0, i] 能拆分成功
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (String str : wordDict) {
+                int j = i - str.length();
+                if (j >= 0) {
+                    dp[i] = dp[j] && set.contains(s.substring(j, i));
+                }
+                if (dp[i]) {
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
 
-    // public boolean f(int begin, int end) {
-    //     if (dp[begin][end] != 0) {
-    //         return dp[begin][end] > 0;
-    //     }
-    //     if (begin == end) {
-    //         dp[begin][end] = -1;
-    //         return false;
-    //     }
-    //     if (set.contains(str.substring(begin, end))) {
-    //         dp[begin][end] = 1;
-    //         return true;
-    //     }
-    //     for (int i = begin + 1; i < end; i++) {
-    //         if(f(begin, i) && f(i, end)) {    
-    //             dp[begin][end] = 1;
-    //             return true;
-    //         }
-    //     }
-    //     dp[begin][end] = -1;
-    //     return false;
-    // }
 }
 // @lc code=end
 

@@ -41,38 +41,41 @@ package Leetcode;
  * 
  * 
  */
-
-// @lc code=start
-
 import java.util.ArrayList;
 import java.util.List;
 
+// @lc code=start
+
+
 class Solution {
-    List<String> res = new ArrayList<>();
-    char[] path;
-    int index = 0;
+    List<String> res;
     public List<String> generateParenthesis(int n) {
-        path = new char[n * 2];
-        f(n, 0);
+        res = new ArrayList<>();
+        char[] path = new char[n * 2];
+        f(path, n, 0, 0);
         return res;
     }
 
-    // 表示从 index 后允许放 ln 个左括号和 rn 个右括号
-    public void f(int ln, int rn) {
+    // ln、rn 分别表示剩余可放的左括号和右括号的数量
+    public void f(char[] path, int ln, int rn, int index) {
         if (index == path.length) {
             res.add(new String(path));
             return;
         }
         if (ln > 0) {
             path[index++] = '(';
-            // 当前位置放了一个左括号后，右括号可放的数量加一（即与该左括号对应的右括号）
-            f(ln - 1, rn + 1);
+            ln--;
+            rn++;
+            f(path, ln, rn, index);
+            ln++;
+            rn--;
             index--;
         }
         if (rn > 0) {
             path[index++] = ')';
-            // 当前位置放了一个右括号后，对左括号的数量没影响
-            f(ln, rn - 1);
+            rn--;
+            f(path, ln, rn, index);
+            rn++;
             index--;
         }
     }

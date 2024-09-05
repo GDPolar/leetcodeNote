@@ -1,5 +1,6 @@
 package Leetcode;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -59,17 +60,14 @@ class Solution {
     public int[] dailyTemperatures(int[] temperatures) {
         // 方法一：单调栈
         // 适用于要寻找任一个元素的右边或者左边第一个比自己大或者小的元素的位置，用单调栈
+        // 保持递减栈
+        Deque<Integer> stack = new ArrayDeque<>();
         int[] ans = new int[temperatures.length];
-        if (temperatures.length == 1) {
-            return ans;
-        }
-        Deque<Integer> stack = new LinkedList<>();
-        // 栈内存放的是 index
-        // 栈底到栈顶，由大到小，这样从左遍历数组就能找到每个元素右侧第一个大于自己的元素   
-        stack.push(0);
-        for (int i = 1; i < temperatures.length; i++) {
+        // 若某位置之后都没有更大的出现，则会一直留在栈内，ans 相应的位置为默认值 0
+        for (int i = 0; i < temperatures.length; i++) {
             while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-                ans[stack.peek()] = i - stack.pop();
+                int pre = stack.pop();
+                ans[pre] = i - pre;
             }
             stack.push(i);
         }

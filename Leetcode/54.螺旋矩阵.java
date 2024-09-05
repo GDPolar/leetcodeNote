@@ -56,7 +56,7 @@ class Solution {
         int m = matrix.length, n = matrix[0].length;
         List<Integer> res = new ArrayList<>(m * n);
         int x = 0, y = 0;
-        for (int i = 0; i < matrix.length*matrix[0].length; ) {
+        for (int i = 0; i < matrix.length * matrix[0].length; ) {
             for (int j = 0; j < n - 1; j++) {
                 res.add(matrix[x][y++]);
                 i++;

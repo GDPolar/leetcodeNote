@@ -70,9 +70,9 @@ package Leetcode;
 // @lc code=start
 class Solution {
     public void nextPermutation(int[] nums) {
-        // eg: [1, 7, 9, 8, 3, 2, 1, 0]
+        // eg: [1, 5, 9, 8, 3, 2] -> [1, 8, 9, 5, 3, 2] -> [1, 8, 2, 3, 5, 9]
         // 下一个序列比当前序列大，则倒序找到第一个满足 nums[i] < nums[i + 1]
-        // 增加的幅度尽可能小，则将 nums[i] 和后面第一个比 nums[i] 大的元素交换
+        // 增加的幅度尽可能小，则将 nums[i] 和后面尽可能小的大数交换，也就是第一个比 nums[i] 大的元素
         // 然后将后面的子序列转为升序，即相对最小的子序列
         int i;
         for (i = nums.length - 2; i >= 0; i--) {

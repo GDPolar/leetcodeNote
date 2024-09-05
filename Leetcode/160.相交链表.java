@@ -123,40 +123,21 @@ class Solution {
         if (headA == null || headB == null) {
             return null;
         }
-        // 求出两个链表的长度，并求出两个链表长度的差值，然后让两个指针移动到相对结尾的同一起点
-        int aLength = 0, bLength = 0;
-        ListNode node = headA;
-        while (node != null) {
-            aLength++;
-            node = node.next;
-        } 
-        node = headB;
-        while (node != null) {
-            bLength++;
-            node = node.next;
-        }
-        // 使得 a 为长的链表
-        if (aLength < bLength) {
-            ListNode temp = headA;
-            headA = headB;
-            headB = temp;
-            // 记得 aLength 和 bLength 也要交换
-            int tempLenth = aLength;
-            aLength = bLength;
-            bLength = tempLenth;
-        }
-        int step = aLength - bLength;
-        while (step-- > 0) {
-             headA = headA.next;
-        }
-        while (headA != null) {
-            if (headA == headB) {
-                return headA;
+        ListNode pA = headA, pB = headB;
+        while (pA != pB) {
+            if (pA == null) {
+                // 第一次短的链表会先等于 null
+                pA = headB;
+            } else {
+                pA = pA.next;
             }
-            headA = headA.next;
-            headB = headB.next;
+            if (pB == null) {
+                pB = headA;
+            } else {
+                pB = pB.next;
+            }
         }
-        return null;
+        return pA;
     }
 }
 // @lc code=end

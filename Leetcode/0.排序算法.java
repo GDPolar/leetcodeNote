@@ -9,8 +9,8 @@ class A {
         heapSort(a, a.length);
         System.out.println("排序后：" + Arrays.toString(a));
 
-        
     }
+
 
     /**
      * 冒泡排序

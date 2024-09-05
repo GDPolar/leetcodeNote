@@ -1,5 +1,6 @@
 package Leetcode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ import java.util.Map.Entry;
 // @lc code=start
 class Solution {
     // 正常做法：使用单调双端队列
-    Deque<Integer> deque = new LinkedList<>();
+    Deque<Integer> deque = new ArrayDeque<>();
     public int[] maxSlidingWindow(int[] nums, int k) {
         int[] res = new int[nums.length - k + 1];
         for (int i = 0; i < k - 1; i++) {

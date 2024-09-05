@@ -17,7 +17,91 @@ class TreeNode {
 }
 
 class Solution{
+
+    // 中序遍历，左中右
     public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            res.add(root.val);
+            root = root.right;
+        }
+        return res;
+    }
+
+    // 先序遍历，中左右
+    public List<Integer> preorderTraversal(TreeNode root) {
+        ArrayList<Integer> res = new ArrayList<>();
+        Deque<TreeNode> stack = new LinkedList<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                res.add(root.val);
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            root = root.right;
+        }
+        return res;
+    }
+
+    // 后序遍历，左右中
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        TreeNode prev = null;
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            // prev 标记右孩子已经被访问过，防止重复访问
+            if (root.right != null && root.right != prev) {
+                stack.push(root);
+                root = root.right;
+            } else {
+                res.add(root.val);
+                prev = root;
+                // 该节点的左右孩子都访问了，若不将 root 标记为 null，下一次循环又会访问左孩子
+                root = null;
+            }
+        }
+        return res;
+    }
+
+    // 层序遍历
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int currentLevelSize = queue.size();
+            List<Integer> currentLevelRes = new ArrayList<>();
+            for (int i = 0; i < currentLevelSize; i++) {
+                TreeNode node = queue.remove();
+                currentLevelRes.add(node.val);
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            res.add(currentLevelRes);
+        }
+        return res;
+    }
+
+    public List<Integer> traversal(TreeNode root) {
         ArrayList<Integer> res = new ArrayList<Integer>();
         Deque<TreeNode> stack = new LinkedList<>();
         if (root == null) {

@@ -27,23 +27,6 @@ class ListNode {
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
-        /*
-        if (head == null || head.next == null) {
-            return head;
-        }
-        ListNode prev = head, curr = prev.next, temp;
-        while (curr != null) {
-            temp = curr.next;
-            curr.next = prev;
-            if (prev == head) {
-                prev.next = null;
-            }
-            prev = curr;
-            curr = temp;
-        }
-        return prev;
-        */
-
         // 递归
         if (head == null || head.next == null) {
             return head;
@@ -55,6 +38,24 @@ class Solution {
         head.next.next = head;
         head.next = null;
         return reHead;    
+    }
+
+    public ListNode reverseList1(ListNode head) {
+        // 迭代
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode prev = head, curr = prev.next;
+        while (curr != null) {
+            ListNode temp = curr.next;
+            curr.next = prev;
+            if (prev == head) {
+                prev.next = null;
+            }
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
     }
 }
 // @lc code=end

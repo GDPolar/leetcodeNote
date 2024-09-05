@@ -62,23 +62,19 @@ class Solution {
         Arrays.fill(lastPos, -1);
         // 获取每种字母最后出现的位置
         for (int i = 0; i < s.length(); i++) {
-            int c = s.charAt(i) - 'a';
-            lastPos[c] = i; 
+            int j = s.charAt(i) - 'a';
+            lastPos[j] = Math.max(lastPos[j], i);
         }
-        int left = 0, right = lastPos[s.charAt(0) - 'a'];
-        for (int i = 0; i < s.length(); ++i) {
+        int end = 0;
+        int prev = -1;
+        for (int i = 0; i < s.length(); i++) {
+            end = Math.max(end, lastPos[s.charAt(i) - 'a']);
             // 找到一个分割点
-            if (i > right) {
-                res.add(right - left + 1);
-                left = i;
-                right = lastPos[s.charAt(i) - 'a'];
-                continue;
-            }
-            if (lastPos[s.charAt(i) - 'a'] > right) {
-                right = lastPos[s.charAt(i) - 'a'];
+            if (i == end) {
+                res.add(i - prev);
+                prev = i;
             }
         }
-        res.add(right - left + 1);
         return res;
 
         /*

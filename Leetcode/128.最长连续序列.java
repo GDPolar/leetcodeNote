@@ -56,21 +56,19 @@ class Solution {
         int res = 0;
         HashSet<Integer> set = new HashSet<>();
         // 去重
-        for (int i : nums) {
-            set.add(i);
+        for (int num : nums) {
+            set.add(num);
         }
-        for (Integer i : set) {
+        for (Integer num : set) {
             // 当前元素位于序列的起点时，计算序列长度
-            if (set.contains(i - 1)) {
+            if (set.contains(num - 1)) {
                 continue;
-            } else {
-                int curNum = i + 1;
-                int curLength = 1;
-                while (set.contains(curNum++)) {
-                    curLength++;
-                }
-                res = Math.max(curLength, res);
             }
+            int length = 0;
+            while (set.contains(num++)) {
+                length++;
+            }
+            res = Math.max(res, length);
         }
         return res;
     }
